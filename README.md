@@ -1,2 +1,2 @@
-# emirgance
+# Emirgance
 Web Components for rapidly building user interfaces
