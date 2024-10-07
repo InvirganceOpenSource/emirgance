@@ -44,3 +44,7 @@ We can then use the component in a page like this:
         </style>
         Hello!
     </my-button>
+
+The resulting page looks like this:
+
+![image](https://github.com/user-attachments/assets/0447b006-ec1b-4e61-ba34-b36ea6854b40)
