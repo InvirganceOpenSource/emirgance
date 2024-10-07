@@ -27,10 +27,9 @@ THE SOFTWARE.
         <title>Test Page</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="../../main/resources/base/js/base.js"></script>
-        <script src="../../main/resources/table/js/test.js"></script>
-        <script src="../../main/resources/table/js/table.js"></script>
-        <script src="../../main/resources/pager/js/pager.js"></script>
+        <script src="../../main/resources/base/base.js"></script>
+        <script src="../../main/resources/paginated/table.js"></script>
+        <script src="../../main/resources/paginated/pager.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 var data = [
@@ -44,6 +43,26 @@ THE SOFTWARE.
                 
                 document.getElementById("testtable").data(data);
             });
+
+            // Inline example
+            class MyButton extends EmirganceBaseElement
+            {
+                constructor()
+                {
+                    super();
+                }
+
+                emirganceInit()
+                {
+                    var button = document.createElement("button");
+
+                    button.textContent = this.textContent;
+
+                    this.shadowRoot.appendChild(button);
+                }
+            }
+
+            customElements.define("my-button", MyButton);
         </script>
     </head>
     <body>
@@ -53,10 +72,20 @@ THE SOFTWARE.
                 <column>Categories</column>
                 <column>Products</column>
             </columns>
-            <link href="../../main/resources/table/css/table.css" rel="stylesheet" type="text/css">
+            <link href="../../main/resources/themes/base/paginated/table.css" rel="stylesheet" type="text/css">
         </paginated-table>
         <paginated-pager table="#testtable">
-            <link href="../../main/resources/pager/css/pager.css" rel="stylesheet" type="text/css">
+            <link href="../../main/resources/themes/base/paginated/pager.css" rel="stylesheet" type="text/css">
         </paginated-pager>
+        <div>&nbsp;</div>
+        <div>&nbsp;</div>
+        <div>&nbsp;</div>
+        <my-button>
+            <style>
+                button { background: green; color: white; font-size: 16pt; border: 2px outset green; }
+                button:active { border: 2px inset green; }
+            </style>
+            Hello!
+        </my-button>
     </body>
 </html>
