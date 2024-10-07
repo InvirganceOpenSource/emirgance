@@ -23,6 +23,8 @@
  */
 class EmirganceBaseElement extends HTMLElement 
 {
+    #observer;
+    
     constructor() 
     {
         super();
@@ -30,12 +32,13 @@ class EmirganceBaseElement extends HTMLElement
         this.attachShadow({ mode: "open" });
         
         var that = this;
-        var observer = new MutationObserver(function(mutations) {
-            observer.disconnect();
+        
+        this.#observer = new MutationObserver(function(mutations) {
+            that.#observer.disconnect();
             that.#attachElements();
          });
 
-        observer.observe(this, {attributes: false, childList: true, characterData: false, subtree: false});
+        this.#observer.observe(this, {attributes: false, childList: true, characterData: false, subtree: false});
     }
 
     #attachElements()
@@ -53,6 +56,16 @@ class EmirganceBaseElement extends HTMLElement
         });
         
         this.emirganceInit();
+    }
+    
+    connectedCallback()
+    {
+        // Load was deferred
+        if(this.childNodes.length)
+        {
+            this.#observer.disconnect();
+            this.#attachElements();
+        }
     }
     
     emirganceInit()
