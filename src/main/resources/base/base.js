@@ -49,9 +49,20 @@ class EmirganceBaseElement extends HTMLElement
         
         // Pull in STYLE and LINK tags
         this.childNodes.forEach(function(element) {
-            if(element.nodeName === "STYLE" || element.nodeName === "LINK")
+            var nodeName = element.nodeName.toUpperCase();
+            var symbols;
+            
+            if(nodeName === "STYLE" || nodeName === "LINK")
             {
                 that.shadowRoot.appendChild(element);
+            }
+            
+            if(nodeName === "SYMBOLS") // TODO: This isn't a great way of handling this
+            {
+                symbols = document.createElement("svg-symbols");
+                
+                that.replaceChild(symbols, element);
+                symbols.setAttribute("ref", element.getAttribute("ref"));
             }
         });
         
