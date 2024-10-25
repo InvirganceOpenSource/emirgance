@@ -146,6 +146,21 @@ class PaginatedTable extends EmirganceBaseElement
         this.render();
     }
     
+    #renderHeader()
+    {
+        var tr = document.createElement("tr");
+        
+        this.#columns.forEach(function(column, index) {
+            var th = document.createElement("th");
+            
+            th.innerText = column.name;
+            th.classList.add(column.type);
+            tr.appendChild(th);
+        });
+        
+        this.#thead.replaceChildren(tr);
+    }
+    
     #attribute(name, value)
     {
         if(!this.attributes[name]) return;
@@ -227,6 +242,43 @@ class PaginatedTable extends EmirganceBaseElement
         }
         
         return this.#pageSize;
+    }
+    
+    addColumn(key, name, options)
+    {
+        if(options !== null && typeof key !== "string" )
+        {
+            options = key;
+        }
+        
+        if(options === null)
+        {
+            options = {};
+        }
+        
+        options.key = options.key || key;
+        options.name = options.name || name;
+        options.type = (options.type && options.type.toLowerCase()) || "string";
+        options.renderer = options.renderer || PaginatedTable.defaultRenderers[options.type];
+        
+        this.#columns.push(options);
+        
+        this.#renderHeader();
+        this.render();
+    }
+    
+    removeColumn(key)
+    {
+        for(var i=0; i<this.#columns.length; i++)
+        {
+            if(this.#columns[i].key === key)
+            {
+                this.#columns.splice(i, 1);
+            }
+        }
+        
+        this.#renderHeader();
+        this.render();
     }
     
     register(pager)
