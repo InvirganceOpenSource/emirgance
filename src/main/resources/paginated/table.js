@@ -40,14 +40,14 @@ class PaginatedTable extends EmirganceBaseElement
                 });
                 
                 a.setAttribute("href", link);
-                a.innerText = value;
+                a.innerText = (value || value === false || value === 0) ? value : "";
                 
                 element.appendChild(a);
                 
                 return;
             }
             
-            element.innerText = value;
+            element.innerText = (value || value === false || value === 0) ? value : "";
         },
         "number": function(element, column, value, record) {
             
