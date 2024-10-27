@@ -30,6 +30,7 @@ THE SOFTWARE.
         <script src="../../main/resources/base/base.js"></script>
         <script src="../../main/resources/paginated/table.js"></script>
         <script src="../../main/resources/paginated/pager.js" defer></script>
+        <script src="../../main/resources/paginated/display.js" defer></script>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 var data = [
@@ -74,9 +75,14 @@ THE SOFTWARE.
             </columns>
             <link href="../../main/resources/themes/base/paginated/table.css" rel="stylesheet" type="text/css">
         </paginated-table>
-        <paginated-pager table="#testtable">
-            <link href="../../main/resources/themes/base/paginated/pager.css" rel="stylesheet" type="text/css">
-        </paginated-pager>
+        <div style="display: flex; align-items: center;">
+            <paginated-display table="#testtable" style="flex-grow: 1;">
+                <link href="../../main/resources/themes/base/paginated/display.css" rel="stylesheet" type="text/css">
+            </paginated-display>
+            <paginated-pager table="#testtable">
+                <link href="../../main/resources/themes/base/paginated/pager.css" rel="stylesheet" type="text/css">
+            </paginated-pager>
+        </div>
         <div>&nbsp;</div>
         <div>&nbsp;</div>
         <div>&nbsp;</div>
