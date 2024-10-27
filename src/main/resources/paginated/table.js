@@ -55,6 +55,12 @@ class PaginatedTable extends EmirganceBaseElement
 
             PaginatedTable.defaultRenderers.string(element, column, value, record);
         },
+        "money": function(element, column, value, record) {
+            
+            value = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
+            
+            PaginatedTable.defaultRenderers.string(element, column, value, record);
+        },
         "centered": function(element, column, value, record) {
             
             PaginatedTable.defaultRenderers.string(element, column, value, record);

@@ -62,7 +62,7 @@ table tbody tr td.empty {
     border-bottom: 1px solid transparent;
 }
 
-table tbody tr td.number {
+table tbody tr td.number, table tbody tr td.money {
     width: 128px;
     text-align: right;
 }
