@@ -73,9 +73,14 @@ class PaginatedTable extends EmirganceBaseElement
     
     #columns = [];
     #records = [];
+    #sorted = [];
+    
     #pagers = [];
     #pageSize = 10;
     #page = 0;
+    
+    #sortBy;
+    #sortReversed = false;
     
     #disableCallback = false;
     
@@ -120,12 +125,14 @@ class PaginatedTable extends EmirganceBaseElement
                     
                     var key = element.attributes["key"] && element.attributes["key"].nodeValue.trim() || element.innerText.trim();
                     var type = element.attributes["type"] && element.attributes["type"].nodeValue.trim().toLowerCase() || "string";
+                    var sortable = (!element.attributes["sortable"] || true) || (element.attributes["sortable"] && (element.attributes["sortable"].nodeValue.trim().toLowerCase() === "true"));
                     
                     columns[index++] = {
                         "key": key,
                         "name": element.innerText,
                         "type": type,
                         "element": element,
+                        "sortable": sortable,
                         "renderer": PaginatedTable.defaultRenderers[type],
                         "href": element.attributes["href"] && element.attributes["href"].nodeValue || null
                     };
@@ -134,34 +141,45 @@ class PaginatedTable extends EmirganceBaseElement
         });
         
         this.#columns = columns;
-        tr = document.createElement("tr");
         
-        columns.forEach(function(column, index) {
-            var th = document.createElement("th");
-            
-            th.innerText = column.name;
-            th.classList.add(column.type);
-            tr.appendChild(th);
-        });
-        
-        this.#thead.appendChild(tr);
         this.#table.appendChild(this.#thead);
         this.#table.appendChild(this.#tbody);
         this.shadowRoot.appendChild(this.#table);
         
+        this.#renderHeader();
         this.render();
     }
     
     #renderHeader()
     {
         var tr = document.createElement("tr");
+        var that = this;
         
         this.#columns.forEach(function(column, index) {
             var th = document.createElement("th");
+            var span;
             
             th.innerText = column.name;
             th.classList.add(column.type);
             tr.appendChild(th);
+            
+            if(column.sortable)
+            {
+                th.classList.add("sortable");
+                th.onclick = function() {
+                    that.sort(column.key, (column.key === that.#sortBy) ? !that.#sortReversed : that.#sortReversed);
+                };
+            }
+            
+            if(that.#sortBy && column.key === that.#sortBy)
+            {
+                span = document.createElement("span");
+                
+                span.classList.add("arrow");
+                span.innerHTML = that.#sortReversed ? "&#x25BC;" : "&#x25B2;";
+                
+                th.appendChild(span);
+            }
         });
         
         this.#thead.replaceChildren(tr);
@@ -208,6 +226,9 @@ class PaginatedTable extends EmirganceBaseElement
         if(records)
         {
             this.#records = records;
+            
+            if(this.#sortBy) this.sort(this.#sortBy);
+            else this.#sorted = this.#records;
             
             this.render();
         }
@@ -266,6 +287,7 @@ class PaginatedTable extends EmirganceBaseElement
         options.name = options.name || name;
         options.type = (options.type && options.type.toLowerCase()) || "string";
         options.renderer = options.renderer || PaginatedTable.defaultRenderers[options.type];
+        options.sortable = (typeof options.sortable !== 'undefined' && options.sortable) || true;
         
         this.#columns.push(options);
         
@@ -304,12 +326,61 @@ class PaginatedTable extends EmirganceBaseElement
         }
     }
     
+    sort(column, reverse)
+    {
+        var that = this;
+        
+        if(column)
+        {
+            this.#columns.forEach(function(item) {
+
+                if(item.key !== column || !item.sortable) return;
+
+                that.#sortBy = column;
+                that.#sortReversed = !!reverse;
+                that.#sorted = that.#records.toSorted(function(left, right) {
+                    
+                    left = left[column];
+                    right = right[column];
+                    
+                    if(left === null && right === null) return 0;
+                    if(left === null) return 1;
+                    if(right === null) return -1;
+
+                    if(typeof left === "number" && typeof right === "number") return left - right;
+                    
+                    left = String(left).toUpperCase();
+                    right = String(right).toUpperCase();
+                    
+                    if(left < right) return -1;
+                    if(left > right) return 1;
+                    
+                    return 0;
+                });
+                
+                if(that.#sortReversed) that.#sorted.reverse();
+
+                that.#renderHeader();
+                that.render();
+            });
+            
+            return this;
+        }
+        
+        return this.#sortBy;
+    }
+    
+    reversed()
+    {
+        return this.#sortReversed;
+    }
+    
     render()
     {
         var page = Math.min(Math.max(0, this.#page), this.pages()-1);
 
         var start = page * this.#pageSize;
-        var lines = Math.min(this.#pageSize, this.#records.length);
+        var lines = Math.min(this.#pageSize, this.#sorted.length);
         var rows = [];
         var column;
         var record;
@@ -328,9 +399,9 @@ class PaginatedTable extends EmirganceBaseElement
             {
                 td = document.createElement("td");
                 column = this.#columns[j];
-                record = this.#records[start+i];
+                record = this.#sorted[start+i];
                 
-                if(start+i<this.#records.length)
+                if(start+i<this.#sorted.length)
                 {
                     column.renderer(td, column, record[column.key], record);
                     td.classList.add(column.type);

@@ -36,11 +36,30 @@ table thead tr {
 
 table thead tr th {
     padding: 4px 6px;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+table thead tr th.sortable {
+    position: relative;
+    cursor: pointer;
+}
+
+table thead tr th .arrow {
+    display: block;
+    position: absolute;
+    top: 4px;
+    right: 12px;
 }
 
 table thead tr th.number {
     width: 128px;
     text-align: right;
+}
+
+table thead tr th.number .arrow {
+    right: initial;
+    left: 12px;
 }
 
 table thead tr th.centered {
