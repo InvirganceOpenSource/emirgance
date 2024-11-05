@@ -330,6 +330,18 @@ class PaginatedTable extends EmirganceBaseElement
     {
         var that = this;
         
+        if(column === null)
+        {
+            this.#sortBy = null;
+            this.#sortReversed = false;
+            this.#sorted = this.#records;
+            
+            this.#renderHeader();
+            this.render();
+            
+            return this;
+        }
+        
         if(column)
         {
             this.#columns.forEach(function(item) {
