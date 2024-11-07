@@ -74,7 +74,9 @@ class PaginatedTable extends EmirganceBaseElement
     #columns = [];
     #records = [];
     #sorted = [];
+    #filtered = [];
     
+    #filters = {};
     #pagers = [];
     #pageSize = 10;
     #page = 0;
@@ -146,6 +148,7 @@ class PaginatedTable extends EmirganceBaseElement
         this.#table.appendChild(this.#tbody);
         this.shadowRoot.appendChild(this.#table);
         
+        this.#filter();
         this.#renderHeader();
         this.render();
     }
@@ -199,6 +202,48 @@ class PaginatedTable extends EmirganceBaseElement
         this.#disableCallback = false;
     }
     
+    #filter() 
+    {
+        var filtered = [];
+        var that = this;
+        
+        this.#sorted.forEach(function(record) {
+            
+            for(const [key, filter] of Object.entries(that.#filters))
+            {
+                if(!filter(record)) return;
+            }
+
+            filtered.push(record);
+        });
+
+        this.#filtered = filtered;
+    }
+    
+    columns()
+    {
+        var keys = [];
+
+        this.#columns.forEach(function(column) {
+            keys.push(column.key);
+        });
+        
+        return keys;
+    }
+    
+    filter(name, filter)
+    {
+        if(!name) return this;
+        
+        if(!filter) delete this.#filters[name]; 
+        else this.#filters[name] = filter;
+        
+        this.#filter();
+        this.render();
+        
+        return this;
+    }
+    
     first() 
     {
         this.page(0);
@@ -230,6 +275,7 @@ class PaginatedTable extends EmirganceBaseElement
             if(this.#sortBy) this.sort(this.#sortBy);
             else this.#sorted = this.#records;
             
+            this.#filter();
             this.render();
         }
         
@@ -253,7 +299,7 @@ class PaginatedTable extends EmirganceBaseElement
     
     pages()
     {
-        return Math.max(1, Math.floor(this.#records.length / this.#pageSize) + (this.#records.length % this.#pageSize === 0 ? 0 : 1));
+        return Math.max(1, Math.floor(this.#filtered.length / this.#pageSize) + (this.#filtered.length % this.#pageSize === 0 ? 0 : 1));
     }
     
     pageSize(pageSize)
@@ -336,6 +382,7 @@ class PaginatedTable extends EmirganceBaseElement
             this.#sortReversed = false;
             this.#sorted = this.#records;
             
+            this.#filter();
             this.#renderHeader();
             this.render();
             
@@ -372,6 +419,7 @@ class PaginatedTable extends EmirganceBaseElement
                 
                 if(that.#sortReversed) that.#sorted.reverse();
 
+                that.#filter();
                 that.#renderHeader();
                 that.render();
             });
@@ -392,7 +440,7 @@ class PaginatedTable extends EmirganceBaseElement
         var page = Math.min(Math.max(0, this.#page), this.pages()-1);
 
         var start = page * this.#pageSize;
-        var lines = Math.min(this.#pageSize, this.#sorted.length);
+        var lines = Math.min(this.#pageSize, this.#filtered.length);
         var rows = [];
         var column;
         var record;
@@ -411,9 +459,9 @@ class PaginatedTable extends EmirganceBaseElement
             {
                 td = document.createElement("td");
                 column = this.#columns[j];
-                record = this.#sorted[start+i];
+                record = this.#filtered[start+i];
                 
-                if(start+i<this.#sorted.length)
+                if(start+i<this.#filtered.length)
                 {
                     column.renderer(td, column, record[column.key], record);
                     td.classList.add(column.type);

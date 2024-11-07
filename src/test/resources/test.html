@@ -31,6 +31,7 @@ THE SOFTWARE.
         <script src="../../main/resources/paginated/table.js"></script>
         <script src="../../main/resources/paginated/pager.js" defer></script>
         <script src="../../main/resources/paginated/display.js" defer></script>
+        <script src="../../main/resources/paginated/search.js" defer></script>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 var data = [
@@ -67,6 +68,11 @@ THE SOFTWARE.
         </script>
     </head>
     <body>
+        <div>
+            <paginated-search id="testsearch" table="#testtable">
+                <style></style>
+            </paginated-search>
+        </div>
         <paginated-table id="testtable" page-size="3">
             <columns>
                 <column>Name</column>
