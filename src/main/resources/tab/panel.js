@@ -43,6 +43,16 @@ class TabPanel extends HTMLElement
         return this.#content.length;
     }
     
+    buttons()
+    {
+        this.#buttons;
+    }
+    
+    content(index)
+    {
+        return this.#content[index];
+    }
+    
     select(index)
     {
         if(Number.isInteger(index) && index >= 0 && index < this.#content.length)
@@ -63,6 +73,8 @@ class TabPanel extends HTMLElement
     
     register(element)
     {
+        var button = this.#buttons && this.#buttons.button(this.#content.length);
+        
         if(element instanceof TabButtons)
         {
             this.#buttons = element;
@@ -70,12 +82,19 @@ class TabPanel extends HTMLElement
         else if(element instanceof TabContent)
         {
             if(!this.#content.includes(element)) this.#content.push(element);
-console.log(this.#content.indexOf(element), this.#selected);
             if(this.#content.indexOf(element) !== this.#selected) element.select(false);
+            
+            if(button)
+            {
+                element.setAttribute("aria-labelledby", button.id);
+                button.setAttribute("aria-controls", element.id);
+            }
         }
         else
         {
             console.error("Unexpected element registraion ", element, " to tab-panel ", this);
+            
+            return;
         }
         
         if(!this.#selected && this.#selected !== 0 && this.#content.length)
@@ -115,7 +134,7 @@ class TabButtons extends HTMLElement
     
     button(index)
     {
-        return this.#buttons(index);
+        return this.#buttons[index];
     }
     
     focus(element)
@@ -169,7 +188,7 @@ class TabButtons extends HTMLElement
                 this.#buttons[this.#selected].select(false);
                 this.#buttons[selected].select(true);
                 this.#selected = selected;
-console.log(this.parentElement);
+                
                 if(this.parentElement) this.parentElement.select(selected);
             }
         }
@@ -182,7 +201,7 @@ console.log(this.parentElement);
                 this.#buttons[this.#selected].select(false);
                 this.#buttons[selected].select(true);
                 this.#selected = selected;
-console.log(this.parentElement);
+                
                 if(this.parentElement) this.parentElement.select(selected);
             }
         }
@@ -194,11 +213,19 @@ console.log(this.parentElement);
     
     register(button)
     {
+        var content = this.parentElement && this.parentElement.content(this.#buttons.length);
+        
         if(!(button instanceof TabButton)) console.error("Unexpected element ", button);
         if(!(button instanceof TabButton)) throw new Error("Children must be <tab-button> tags!");
         
         if(!this.#buttons.includes(button)) this.#buttons.push(button);
         if(!this.#selected && this.#selected !== 0) this.#selected = this.#buttons.length-1;
+        
+        if(content)
+        {
+            content.setAttribute("aria-labelledby", button.id);
+            button.setAttribute("aria-controls", content.id);
+        }
     }
 }
 
@@ -225,10 +252,15 @@ class TabButton extends HTMLElement
     
     connectedCallback() 
     {
+        var index = 0;
+        
+        while(document.getElementById("tabbutton-" + index)) index++;
+        
         // Install tab index so that we can maintain focus
         if(!this.getAttribute("tabindex")) this.setAttribute("tabindex", "0");
         if(!this.getAttribute("type")) this.setAttribute("type", "button");
         if(!this.getAttribute("role")) this.setAttribute("role", "tab");
+        if(!this.getAttribute("id")) this.setAttribute("id", "tabbutton-" + index);
         
         if(this.parentElement)
         {
@@ -261,8 +293,14 @@ class TabContent extends HTMLElement
     
     connectedCallback() 
     {
+        var index = 0;
+        
+        while(document.getElementById("tabcontent-" + index)) index++;
+        
+        if(!this.getAttribute("id")) this.setAttribute("id", "tabcontent-" + index);
         if(!this.getAttribute("role")) this.setAttribute("role", "tabpanel");
 //        if(!this.getAttribute("aria-labelledby")) this.setAttribute("aria-labelledby", "...");
+
 
         if(this.parentElement) this.parentElement.register(this);
     }
