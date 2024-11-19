@@ -71,6 +71,36 @@ class TabPanel extends HTMLElement
         }
     }
     
+    addTab(tab, content)
+    {
+        var element = document.createElement("tab-content");
+        
+        if(this.#buttons) this.#buttons.add(tab);
+        
+        element.appendChild(content);
+        this.appendChild(element);
+    }
+    
+    removeTab(element)
+    {
+        var index = Number.isInteger(element) ? element : this.#content.indexOf(element);
+        
+        index = this.#buttons.remove(index >= 0 ? index : element);
+        
+        if(index < 0) return -1; // We tried, but we can't find it
+        
+        this.#content[index].parentElement.removeChild(this.#content[index]);
+        this.#content.splice(index, 1);
+        
+        if(this.#selected === index) 
+        {
+            this.#selected = null;
+            this.select(Math.min(index, this.#content.length - 1));
+        }
+        
+        return index;
+    }
+    
     register(element)
     {
         var button = this.#buttons && this.#buttons.button(this.#content.length);
@@ -135,6 +165,26 @@ class TabButtons extends HTMLElement
     button(index)
     {
         return this.#buttons[index];
+    }
+    
+    add(element)
+    {
+        var button = document.createElement("tab-button");
+        
+        button.appendChild(element);
+        this.appendChild(button);
+    }
+    
+    remove(element)
+    {
+        var index = Number.isInteger(element) ? element : this.#buttons.indexOf(element);
+        
+        if(index < 0) return index;
+        
+        this.#buttons[index].parentElement.removeChild(this.#buttons[index]);
+        this.#buttons.splice(index, 1);
+        
+        return index;
     }
     
     focus(element)
