@@ -59,7 +59,7 @@ class TabPanel extends HTMLElement
         {
             if(this.#selected === index) return;
             
-            if(this.#selected || this.#selected === 0) this.#content[this.#selected].select(false);
+            for(var content of this.#content) content.select(false);
             
             this.#content[index].select(true);
             this.#selected = index;
@@ -92,11 +92,18 @@ class TabPanel extends HTMLElement
         this.#content[index].parentElement.removeChild(this.#content[index]);
         this.#content.splice(index, 1);
         
-        if(this.#selected === index) 
+        if(this.#selected === index)
         {
             this.#selected = null;
-            this.select(Math.min(index, this.#content.length - 1));
+            
+            if(this.#content.length) 
+            {
+                if(this.#content.length > index) this.select(index);
+                else this.select(this.#content.length - 1); 
+            }
         }
+        
+        if(this.#selected > index) this.#selected--;
         
         return index;
     }
@@ -126,7 +133,7 @@ class TabPanel extends HTMLElement
             
             return;
         }
-        
+
         if(!this.#selected && this.#selected !== 0 && this.#content.length)
         {
             this.select(this.#content.length - 1);
@@ -172,7 +179,19 @@ class TabButtons extends HTMLElement
         var button = document.createElement("tab-button");
         
         button.appendChild(element);
-        this.appendChild(button);
+        
+        if(this.#buttons.length)
+        {
+            this.#buttons[this.#buttons.length-1].after(button);
+        }
+        else if(this.firstChild)
+        {
+            this.firstChild.after(button);
+        }
+        else
+        {
+            this.appendChild(button);
+        }
     }
     
     remove(element)
@@ -183,6 +202,18 @@ class TabButtons extends HTMLElement
         
         this.#buttons[index].parentElement.removeChild(this.#buttons[index]);
         this.#buttons.splice(index, 1);
+        
+        if(this.#selected === index)
+        {
+            this.#selected = null;
+            
+            if(this.#buttons.length)
+            {
+                this.select(Math.min(index, this.#buttons.length - 1)); 
+            }
+        }
+        
+        if(this.#selected > index) this.#selected--;
         
         return index;
     }
@@ -225,35 +256,31 @@ class TabButtons extends HTMLElement
         this.#buttons[this.#focused].focus();
     }
     
+    #select(selected)
+    {
+        if(selected >= 0 && selected !== this.#selected)
+        {
+            for(var button of this.#buttons) button.select(false);
+
+            this.#buttons[selected].select(true);
+            this.#selected = selected;
+
+            if(this.parentElement && this.parentElement.length > selected) 
+            {
+                this.parentElement.select(selected);
+            }
+        }
+    }
+    
     select(element)
     {
-        var selected;
-        
         if(element instanceof HTMLElement) 
         {
-            selected = this.#buttons.indexOf(element);
-            
-            if(selected >= 0 && selected !== this.#selected)
-            {
-                this.#buttons[this.#selected].select(false);
-                this.#buttons[selected].select(true);
-                this.#selected = selected;
-                
-                if(this.parentElement) this.parentElement.select(selected);
-            }
+            this.#select(this.#buttons.indexOf(element));
         }
         else if(Number.isInteger(element) && element >= 0 && element < this.#buttons.length)
         {
-            selected = element;
-            
-            if(selected !== this.#selected)
-            {
-                this.#buttons[this.#selected].select(false);
-                this.#buttons[selected].select(true);
-                this.#selected = selected;
-                
-                if(this.parentElement) this.parentElement.select(selected);
-            }
+            this.#select(element);
         }
         else
         {
@@ -269,7 +296,7 @@ class TabButtons extends HTMLElement
         if(!(button instanceof TabButton)) throw new Error("Children must be <tab-button> tags!");
         
         if(!this.#buttons.includes(button)) this.#buttons.push(button);
-        if(!this.#selected && this.#selected !== 0) this.#selected = this.#buttons.length-1;
+        if(!this.#selected && this.#selected !== 0) this.select(this.#buttons.length-1);
         
         if(content)
         {
@@ -349,8 +376,6 @@ class TabContent extends HTMLElement
         
         if(!this.getAttribute("id")) this.setAttribute("id", "tabcontent-" + index);
         if(!this.getAttribute("role")) this.setAttribute("role", "tabpanel");
-//        if(!this.getAttribute("aria-labelledby")) this.setAttribute("aria-labelledby", "...");
-
 
         if(this.parentElement) this.parentElement.register(this);
     }

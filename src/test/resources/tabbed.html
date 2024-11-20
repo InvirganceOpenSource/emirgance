@@ -8,21 +8,128 @@
         <script src="../../main/resources/base/base.js"></script>
         <script src="../../main/resources/paginated/table.js"></script>
         <script src="../../main/resources/tab/panel.js"></script>
+        <script>
+            var data = [
+                {"name": "Maria Ahlefeldt", "content": '<a href="https://en.wikipedia.org/wiki/Maria_Theresia_Ahlefeldt">Maria Theresia Ahlefeldt</a> (16 January 1755 – 20 December 1810) was a Danish, (originally German), composer. She is known as the first female composer in Denmark. Maria Theresia composed music for several ballets, operas, and plays of the royal theatre. She was given good critic as a composer and described as a “<span lang="da">virkelig Tonekunstnerinde</span>” (\'a True Artist of Music\').'},
+                {"name": "Carl Andersen", "content": '<a href="https://en.wikipedia.org/wiki/Joachim_Andersen_(composer)">Carl Joachim Andersen</a> (29 April 1847 – 7 May 1909) was a Danish flutist, conductor and composer born in Copenhagen, son of the flutist Christian Joachim Andersen. Both as a virtuoso and as composer of flute music, he is considered one of the best of his time. He was considered to be a tough leader and teacher and demanded as such a lot from his orchestras but through that style he reached a high level.'},
+                {"name": "Ida da Fonseca", "content": '<a href="https://en.wikipedia.org/wiki/Ida_Henriette_da_Fonseca">Ida Henriette da Fonseca</a> (July 27, 1802 – July 6, 1858) was a Danish opera singer and composer. Ida Henriette da Fonseca was the daughter of Abraham da Fonseca (1776–1849) and Marie Sofie Kiærskou (1784–1863). She and her sister Emilie da Fonseca were students of Giuseppe Siboni, choir master of the Opera in Copenhagen. She was given a place at the royal Opera alongside her sister the same year she debuted in 1827.'},
+                {"name": "Peter Müller", "content": '<a href="https://en.wikipedia.org/wiki/Peter_Lange-M%C3%BCller">Peter Erasmus Lange-Müller</a> (1 December 1850 – 26 February 1926) was a Danish composer and pianist. His compositional style was influenced by Danish folk music and by the work of Robert Schumann; Johannes Brahms; and his Danish countrymen, including J.P.E. Hartmann.'}
+            ];
+            
+            document.addEventListener("DOMContentLoaded", function() {
+                var panel = document.querySelector(".emirgance-interactive-example tab-panel");
+                var add = document.querySelector(".emirgance-interactive-example #add svg");
+                
+                function attachListener(element)
+                {
+                    var svg = element.querySelector("svg");
+                    
+                    svg.onclick = function() {
+                        var button = (element instanceof TabButton) ? element : element.parentElement;
+                        
+                        panel.removeTab(button);
+                        
+                        if(panel.length < data.length) add.style.removeProperty("display");
+                    };
+                }
+                
+                function generateTab(name)
+                {
+                    var svgns = "http://www.w3.org/2000/svg";
+                    var xlinkns = "http://www.w3.org/1999/xlink";
+                    var span = document.createElement("span");
+                    
+                    var svg = document.createElementNS(svgns, "svg");
+                    var use = document.createElementNS(svgns, "use");
+                    
+                    span.textContent = name;
+                    
+                    use.setAttributeNS(xlinkns, "href", "#circlex");
+                    svg.appendChild(use);
+                    span.appendChild(svg);
+                    
+                    attachListener(span);
+                    
+                    return span;
+                }
+                
+                function generateContent(content)
+                {
+                    var div = document.createElement("div");
+                    
+                    div.innerHTML = content;
+                    
+                    return div;
+                }
+                
+                add.onclick = function() {
+                    
+                    var name;
+                    var content;
+                    
+                    if(panel.length >= data.length) return;
+                    
+                    name = generateTab(data[panel.length].name);
+                    content = generateContent(data[panel.length].content);
+                                        
+                    panel.addTab(name, content);
+                    
+                    if(panel.length < data.length) add.style.removeProperty("display");
+                    else add.style.display = "none";
+                };
+                
+                panel.querySelectorAll("tab-button").forEach(attachListener);
+            });
+        </script>
         <link rel="stylesheet" href="../../main/resources/themes/base/tab/panel.css">
         <style>
-            .emirgance-base-example {
+            .emirgance-base-example, .emirgance-interactive-example {
                 max-width: 60%;
                 margin: auto;
                 margin-top: 1rem;
                 margin-bottom: 1rem;
             }
             
-            .emirgance-base-example tab-content {
+            .emirgance-base-example tab-content, .emirgance-interactive-example tab-content {
                 min-height: 150px;
+            }
+            
+            .emirgance-interactive-example svg {
+                color: black;
+                width: 14px;
+                height: 14px;
+                margin-left: 4px;
+                margin-top: 4px;
+            }
+            
+            .emirgance-interactive-example #add svg {
+                width: 16px;
+                cursor: pointer;
+            }
+            
+            .emirgance-interactive-example #add {
+                background-color: transparent;
+                border-top: 0px;
+                border-right: 0px;
+                border-bottom: 0px;
+                border-left: 1px solid rgb(183, 183, 184);
             }
         </style>
     </head>
     <body>
+        
+        <!-- Icons for interactive example -->
+        <svg xmlns="http://www.w3.org/2000/svg" style="color: black; display: none;">
+            <!--!Font Awesome Free 6.7.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+            <symbol id="circlex" viewBox="0 0 512 512">
+                <path fill="currentcolor" d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c-9.4 9.4-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-24.6-9.4-33.9 0z"/>
+            </symbol>
+            <symbol id="squareplus" viewBox="0 0 448 512">
+                <path d="M64 80c-8.8 0-16 7.2-16 16l0 320c0 8.8 7.2 16 16 16l320 0c8.8 0 16-7.2 16-16l0-320c0-8.8-7.2-16-16-16L64 80zM0 96C0 60.7 28.7 32 64 32l320 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96zM200 344l0-64-64 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l64 0 0-64c0-13.3 10.7-24 24-24s24 10.7 24 24l0 64 64 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-64 0 0 64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/>
+            </symbol>
+        </svg>
+        
+        <!-- Base example with no special styling -->
         <div class="emirgance-base-example">
             <tab-panel>
                 <tab-buttons>
@@ -63,6 +170,38 @@
                     <a href="https://en.wikipedia.org/wiki/Peter_Lange-M%C3%BCller">Peter Erasmus Lange-Müller</a>
                     (1 December 1850 – 26 February 1926) was a Danish composer and pianist.
                     His compositional style was influenced by Danish folk music and by the work of Robert Schumann; Johannes Brahms; and his Danish countrymen, including J.P.E. Hartmann.
+                </tab-content>
+            </tab-panel>
+        </div>
+        
+        <!-- Interactive example adding and removing tabs -->
+        <div class="emirgance-interactive-example">
+            <tab-panel>
+                <tab-buttons>
+                    <tab-button>
+                      <span>Maria Ahlefeldt</span>
+                      <svg><use xlink:href="#circlex"></use></svg>
+                    </tab-button>
+                    <tab-button>
+                      <span>Carl Andersen</span>
+                      <svg><use xlink:href="#circlex"></use></svg>
+                    </tab-button>
+                    <button id="add">
+                      <svg><use xlink:href="#squareplus"></use></svg>
+                    </button>
+                </tab-buttons>
+                <tab-content>
+                    <a href="https://en.wikipedia.org/wiki/Maria_Theresia_Ahlefeldt">Maria Theresia Ahlefeldt</a>
+                    (16 January 1755 – 20 December 1810) was a Danish, (originally German), composer.
+                    She is known as the first female composer in Denmark.
+                    Maria Theresia composed music for several ballets, operas, and plays of the royal theatre.
+                    She was given good critic as a composer and described as a “<span lang="da">virkelig Tonekunstnerinde</span>” ('a True Artist of Music').
+                </tab-content>
+                <tab-content>
+                    <a href="https://en.wikipedia.org/wiki/Joachim_Andersen_(composer)">Carl Joachim Andersen</a>
+                    (29 April 1847 – 7 May 1909) was a Danish flutist, conductor and composer born in Copenhagen, son of the flutist Christian Joachim Andersen.
+                    Both as a virtuoso and as composer of flute music, he is considered one of the best of his time.
+                    He was considered to be a tough leader and teacher and demanded as such a lot from his orchestras but through that style he reached a high level.
                 </tab-content>
             </tab-panel>
         </div>
