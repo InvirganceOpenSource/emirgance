@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Tree Interface Test</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../../main/resources/themes/base/tree/panel.css">
+        <script src="../../main/resources/base/base.js"></script>
+        <script src="../../main/resources/tree/panel.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var tree = document.getElementById("base-test");
+                var display = document.getElementById("display");
+                
+                function formatPath(array)
+                {
+                    var path = "";
+                    
+                    for(var item of array)
+                    {
+                        if(path) path += " / ";
+                        
+                        path += item;
+                    }
+                    
+                    return path;
+                }
+                
+                tree.addEventListener("NodeSelected", function(event) {
+                    
+                    display.innerHTML = `<p>You <b>selected</b> node <i>${event.detail.label}</i></p>` +
+                                        `<p><b>Path:</b> ${formatPath(event.detail.path)}</p>`;
+                });
+                
+                tree.addEventListener("NodeAction", function(event) {
+                    
+                    display.innerHTML = `<p>You <b>activated</b> node <i>${event.detail.label}</i></p>` +
+                                        `<p>Path: ${formatPath(event.detail.path)}</p>`;
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div style="max-width: 60%; margin: auto; display: flex; gap: 4em;">
+            
+            <tree-panel id="base-test">
+                <tree-node>
+                    <tree-label>About</tree-label>
+                    <tree-node>
+                        <tree-label>Overview</tree-label>
+                    </tree-node>
+                    <tree-node>
+                        <tree-label>Administration</tree-label>
+                    </tree-node>
+                    <tree-node>
+                        <tree-label>Facts</tree-label>
+                        <tree-node>
+                            <tree-label>History</tree-label>
+                        </tree-node>
+                        <tree-node>
+                            <tree-label>Current Statistics</tree-label>
+                        </tree-node>
+                        <tree-node>
+                            <tree-label>Awards</tree-label>
+                        </tree-node>
+                    </tree-node>
+                    <tree-node>
+                        <tree-label>Campus Tours</tree-label>
+                        <tree-node>
+                            <tree-label>For Prospective Students</tree-label>
+                        </tree-node>
+                        <tree-node>
+                            <tree-label>For Alumni</tree-label>
+                        </tree-node>
+                        <tree-node>
+                            <tree-label>For Visitors</tree-label>
+                        </tree-node>
+                    </tree-node>
+                </tree-node>
+                <tree-node>
+                    <tree-label>Admissions</tree-label>
+                    <tree-node>
+                        <tree-label>Apply</tree-label>
+                    </tree-node>
+                    <tree-node>
+                        <tree-label>Tuition</tree-label>
+                        <tree-node>
+                            <tree-label>Undergraduate</tree-label>
+                        </tree-node>
+                        <tree-node>
+                            <tree-label>Graduate</tree-label>
+                        </tree-node>
+                        <tree-node>
+                            <tree-label>Professional Schools</tree-label>
+                        </tree-node>
+                    </tree-node>
+                    <tree-node>
+                        <tree-label>Sign Up</tree-label>
+                    </tree-node>
+                    <tree-node>
+                        <tree-label>Visit</tree-label>
+                    </tree-node>
+                    <tree-node>
+                        <tree-label>Photo Tour</tree-label>
+                    </tree-node>
+                    <tree-node>
+                        <tree-label>Connect</tree-label>
+                    </tree-node>
+                </tree-node>
+                <tree-node>
+                    <tree-label>Academics</tree-label>
+                    <tree-node>
+                        <tree-label>Colleges & Schools</tree-label>
+                    </tree-node>
+                    <tree-node>
+                        <tree-label>Programs of Study</tree-label>
+                    </tree-node>
+                    <tree-node>
+                        <tree-label>Honors Programs</tree-label>
+                    </tree-node>
+                    <tree-node>
+                        <tree-label>Online Courses</tree-label>
+                    </tree-node>
+                    <tree-node>
+                        <tree-label>Course Explorer</tree-label>
+                    </tree-node>
+                    <tree-node>
+                        <tree-label>Register for Classes</tree-label>
+                    </tree-node>
+                    <tree-node>
+                        <tree-label>Academic Calendar</tree-label>
+                    </tree-node>
+                    <tree-node>
+                        <tree-label>Transcripts</tree-label>
+                    </tree-node>
+                </tree-node>
+            </tree-panel>
+            
+            <div id="display">
+                
+            </div>
+            
+        </div>
+        
+    </body>
+</html>
