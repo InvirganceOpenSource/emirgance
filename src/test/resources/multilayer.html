@@ -4,6 +4,23 @@
         <title>Multicomponent Test</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Tabbed interface containing a Tree and a Table">
+
+        <!-- Facebook Meta Tags -->
+        <meta property="og:url" content="https://invirganceopensource.github.io/emirgance/src/test/resources/multilayer.html">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="Multicomponent Test">
+        <meta property="og:description" content="Tabbed interface containing a Tree and a Table">
+        <meta property="og:image" content="https://opengraph.b-cdn.net/production/images/2aa45214-d0de-4125-ac9e-9a07eefd5124.png?token=iAtDrD_86bI5-LkuLEMATWvTzcR2X1o3azDGEIuqCYs&height=580&width=1200&expires=33268395726">
+
+        <!-- Twitter Meta Tags -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta property="twitter:domain" content="invirganceopensource.github.io">
+        <meta property="twitter:url" content="https://invirganceopensource.github.io/emirgance/src/test/resources/multilayer.html">
+        <meta name="twitter:title" content="Multicomponent Test">
+        <meta name="twitter:description" content="Tabbed interface containing a Tree and a Table">
+        <meta name="twitter:image" content="https://opengraph.b-cdn.net/production/images/2aa45214-d0de-4125-ac9e-9a07eefd5124.png?token=iAtDrD_86bI5-LkuLEMATWvTzcR2X1o3azDGEIuqCYs&height=580&width=1200&expires=33268395726">
+
         <script src="../../main/resources/base/base.js"></script>
         <script src="../../main/resources/tab/panel.js"></script>
         <script src="../../main/resources/tree/panel.js"></script>
@@ -62,7 +79,7 @@
             });
         </script>
     </head>
-    <body>
+    <body style="padding-top: 2rem;">
         <div style="max-width: 60%; margin: auto;">
         <tab-panel>
             <tab-buttons>
@@ -75,8 +92,8 @@
             </tab-buttons>
             <tab-content>
                 
-                <div style="display: flex; gap: 4em;">
-                    <div style="height: 60vh; overflow: auto; padding-right: 3em;">
+                <div style="display: flex; gap: 3em;">
+                    <div style="height: 60vh; overflow: auto; min-width: 220px;">
 
                         <tree-panel id="base-test">
                             <tree-node>
