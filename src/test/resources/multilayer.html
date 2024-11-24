@@ -22,13 +22,13 @@
         <meta name="twitter:image" content="https://opengraph.b-cdn.net/production/images/2aa45214-d0de-4125-ac9e-9a07eefd5124.png?token=iAtDrD_86bI5-LkuLEMATWvTzcR2X1o3azDGEIuqCYs&height=580&width=1200&expires=33268395726">
 
         <script src="../../main/resources/base/base.js"></script>
+        <script src="../../main/resources/code/panel.js" defer></script>
         <script src="../../main/resources/tab/panel.js"></script>
         <script src="../../main/resources/tree/panel.js"></script>
         <script src="../../main/resources/paginated/table.js"></script>
         <script src="../../main/resources/paginated/pager.js" defer></script>
         <script src="../../main/resources/paginated/display.js" defer></script>
         <script src="../../main/resources/paginated/search.js" defer></script>
-        <script src="../../main/resources/paginated/table.js"></script>
         <link rel="stylesheet" href="../../main/resources/themes/base/tab/panel.css">
         <link rel="stylesheet" href="../../main/resources/themes/base/tree/panel.css">
         <script>
@@ -88,6 +88,9 @@
                 </tab-button>
                 <tab-button>
                     Table
+                </tab-button>
+                <tab-button>
+                    Code
                 </tab-button>
             </tab-buttons>
             <tab-content>
@@ -197,7 +200,7 @@
 
             </tab-content>
             <tab-content>
-                <div style="height: 60vh;">
+                <div style="height: 60vh; overflow: auto;">
                     
                     <div>
                         <paginated-search id="testsearch" table="#testtable">
@@ -220,6 +223,56 @@
                             <link href="../../main/resources/themes/base/paginated/pager.css" rel="stylesheet" type="text/css">
                         </paginated-pager>
                     </div>
+                </div>
+            </tab-content>
+            <tab-content style="padding: 0px;">
+                <div style="height: 60vh; overflow: auto;">
+                    <code-panel type="javascript">
+                        <link href="../../main/resources/themes/base/code/panel.css" rel="stylesheet" type="text/css">
+                        <code>class WebComponentTemplate extends HTMLElement 
+{
+    static observedAttributes = ["YOUR", "ATTRIBUTES", "HERE"];
+
+    #shadow;
+
+    constructor() 
+    {
+        super();
+    }
+
+    #attachElements()
+    {
+        var that = this;
+
+        if(!this.childNodes.length) return;
+
+        // Pull in STYLE and LINK tags
+        this.childNodes.forEach(function(element) {
+            if(element.nodeName === "STYLE" || element.nodeName === "LINK")
+            {
+                that.#shadow.appendChild(element);
+            }
+        });
+
+        // Add your rendering code here
+    }
+
+    connectedCallback()
+    {
+        var that = this;
+        var observer = new MutationObserver(function(mutations) {
+            that.#attachElements();
+         });
+
+        observer.observe(this, {attributes: false, childList: true, characterData: false, subtree: false});
+
+        this.#shadow = this.attachShadow({ mode: "open" });
+
+        this.#attachElements(); // Attempt to load in case we've been invoked late
+    }
+}
+
+customElements.define("YOUR-TAG-NAME", WebComponentTemplate);</code>
                 </div>
             </tab-content>
         </tab-panel>

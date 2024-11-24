@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Code Panels</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="../../main/resources/code/panel.js"></script>
+        <style>
+            .page { margin: auto; max-width: 80em; }
+            .example { margin: 2em; }
+        </style>
+    </head>
+    <body>
+        <div >
+            <div class="example">
+                <code-panel type="javascript">
+                    <link href="../../main/resources/themes/base/code/panel.css" rel="stylesheet" type="text/css">
+                    <code>this.attachShadow({mode: 'open'});
+this.shadowRoot.innerHTML = "&lt;style> " +
+                            "button { " +
+                            "    background: #1E88E5; " +
+                            "    color: white; " +
+                            "    padding: 2rem 4rem; " +
+                            "    border: 0; font-size: 1.5rem; " +
+                            "}" +
+                            "&lt;/style>" +
+                            "&lt;button>Sup?&lt;/button>";</code>
+                </code-panel>
+            </div>
+
+            <div class="example">
+                <code-panel type="javascript" start="15">
+                    <link href="../../main/resources/themes/base/code/panel.css" rel="stylesheet" type="text/css">
+                    <code>        this.childNodes.forEach(function(element) {
+                if(element.nodeName === "STYLE")
+                {
+                    shadow.appendChild(element);
+                }
+            });</code>
+                </code-panel>
+            </div>
+
+            <div class="example">
+                <code-panel type="javascript" start="25">
+                    <link href="../../main/resources/themes/base/code/panel.css" rel="stylesheet" type="text/css">
+                    <code>class WebComponentTemplate extends HTMLElement 
+{
+    static observedAttributes = ["YOUR", "ATTRIBUTES", "HERE"];
+
+    #shadow;
+
+    constructor() 
+    {
+        super();
+    }
+
+    #attachElements()
+    {
+        var that = this;
+
+        if(!this.childNodes.length) return;
+
+        // Pull in STYLE and LINK tags
+        this.childNodes.forEach(function(element) {
+            if(element.nodeName === "STYLE" || element.nodeName === "LINK")
+            {
+                that.#shadow.appendChild(element);
+            }
+        });
+
+        // Add your rendering code here
+    }
+
+    connectedCallback()
+    {
+        var that = this;
+        var observer = new MutationObserver(function(mutations) {
+            that.#attachElements();
+         });
+
+        observer.observe(this, {attributes: false, childList: true, characterData: false, subtree: false});
+
+        this.#shadow = this.attachShadow({ mode: "open" });
+
+        this.#attachElements(); // Attempt to load in case we've been invoked late
+    }
+}
+
+customElements.define("YOUR-TAG-NAME", WebComponentTemplate);</code>
+                </code-panel>
+            </div>
+
+            <div class="example">
+                <code-panel type="HTML">
+                    <link href="../../main/resources/themes/base/code/panel.css" rel="stylesheet" type="text/css">
+                    <code>&lt;my-button text="Click me!">
+    &lt;link href="mybutton.css" rel="stylesheet" type="text/css">
+&lt;/my-button></code>
+                </code-panel>
+            </div>
+
+            <div class="example">
+                <code-panel type="javascript">
+                    <link href="../../main/resources/themes/base/code/panel.css" rel="stylesheet" type="text/css">
+                    <code>class MyButton extends EmirganceBaseElement
+{
+    constructor()
+    {
+        super();
+    }
+
+    emirganceInit()
+    {
+        var button = document.createElement("button");
+
+        button.textContent = this.getAttribute("text");
+
+        this.shadowRoot.appendChild(button);
+    }
+}
+
+customElements.define("my-button", MyButton);</code>
+                </code-panel>
+            </div>
+            
+        </div>
+    </body>
+</html>
