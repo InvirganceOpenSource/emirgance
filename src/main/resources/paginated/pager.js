@@ -174,6 +174,18 @@ class PaginatedTablePager extends EmirganceBaseElement
         next.innerHTML = "&rsaquo;";
         last.innerHTML = "&raquo;";
         
+        if(selected === 0) 
+        {
+            first.setAttribute("disabled", "true");
+            previous.setAttribute("disabled", "true");
+        }
+        
+        if(selected === total-1) 
+        {
+            next.setAttribute("disabled", "true");
+            last.setAttribute("disabled", "true");
+        }
+        
         first.onclick = function() { that.table().first(); };
         previous.onclick = function() { that.table().previous(); };
         next.onclick = function() { that.table().next(); };

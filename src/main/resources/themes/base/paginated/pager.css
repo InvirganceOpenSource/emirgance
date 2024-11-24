@@ -34,6 +34,10 @@ div.control {
     cursor: pointer;
 }
 
+div.control[disabled] {
+    opacity: 0.25;
+}
+
 div.numbers {
     display: flex;
     margin: auto;
