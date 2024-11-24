@@ -28,6 +28,9 @@ class PaginatedTablePager extends EmirganceBaseElement
     #table;
     #pages = 10;
     
+    #focusPage = null;
+    #focusElement = null;
+    
     constructor() 
     {
         super();
@@ -97,6 +100,8 @@ class PaginatedTablePager extends EmirganceBaseElement
         // We're not yet attached
         if(!this.#top) return;
         
+        numbers.setAttribute("role", "navigation");
+        
         first.innerHTML = "&laquo;";
         previous.innerHTML = "&lsaquo;";
         
@@ -104,11 +109,64 @@ class PaginatedTablePager extends EmirganceBaseElement
         {
             number = document.createElement("div");
             
-            number.classList.add("number", ((start+i === selected) ? "selected" : null));
+            number.setAttribute("tabindex", "0");
+            number.setAttribute("aria-label", "Page " + (i+1));
+            number.classList.add("number");
             number.innerText = format.format(start+i+1);
+            
+            if(i === this.#focusPage) this.#focusElement = number;
+            if(i === selected) number.setAttribute("aria-current", "true");
+            
             number.onclick = function(page) { 
                 return function() { that.table().page(page); };
             }(start+i);
+            
+            number.onkeydown = function(event) {
+                if(event.keyCode === 13) this.click();
+                
+                if(event.keyCode === 35)
+                {
+                    that.#focusPage = (that.#focusPage !== null) ? that.table().pages()-1 : null;
+                    that.#focusElement = null;
+                    
+                    last.click();
+                }
+                
+                if(event.keyCode === 36)
+                {
+                    that.#focusPage = (that.#focusPage !== null) ? 0 : null;
+                    that.#focusElement = null;
+                    
+                    first.click();
+                }
+                
+                if(event.keyCode === 37) 
+                {
+                    that.#focusPage = (that.#focusPage !== null) ? Math.max(that.#focusPage-1, 0) : null;
+                    that.#focusElement = null;
+                    
+                    previous.click();
+                }
+                
+                if(event.keyCode === 39) 
+                {
+                    that.#focusPage = (that.#focusPage !== null) ? Math.min(that.#focusPage+1, that.table().pages()-1) : null;
+                    that.#focusElement = null;
+                    
+                    next.click();
+                }
+            };
+            
+            number.onfocusin = function(number) {
+                return function() {
+                    that.#focusPage = number;
+                };
+            }(i);
+            
+            number.onfocusout = function() {
+                that.#focusPage = null;
+                that.#focusElement = null;
+            };
             
             numbers.appendChild(number);
         }
@@ -127,6 +185,8 @@ class PaginatedTablePager extends EmirganceBaseElement
         this.#top.appendChild(numbers);
         this.#top.appendChild(next);
         this.#top.appendChild(last);
+        
+        if(this.#focusElement) this.#focusElement.focus();
     }
 }
 

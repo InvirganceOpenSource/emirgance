@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Test Page</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="../../main/resources/base/base.js"></script>
+        <script src="../../main/resources/paginated/table.js"></script>
+        <script src="../../main/resources/paginated/pager.js" defer></script>
+        <script src="../../main/resources/paginated/display.js" defer></script>
+        <script src="../../main/resources/paginated/search.js" defer></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var data = [
+                    {Name: "Bob", Categories: 2, Products: 20},
+                    {Name: "Larry", Categories: 1, Products: 12},
+                    {Name: "Moe", Categories: 7, Products: 54},
+                    {Name: "Curly", Categories: 4, Products: 4},
+                    {Name: "Shemp", Categories: 8, Products: 14},
+                    {Name: "Joe", Categories: 6, Products: 21},
+                    {Name: "Clark", Categories: 2, Products: 13},
+                    {Name: "Bull", Categories: 5, Products: 49},
+                    {Name: "Bubba", Categories: 1, Products: 1},
+                    {Name: "Forrest", Categories: 6, Products: 99}
+                ];
+                
+                document.getElementById("testtable").data(data);
+            });
+        </script>
+        <style>
+            .table-layout { max-width: 50em; margin: auto; }
+            .filter-bar { text-align: right; }
+        </style>
+    </head>
+    <body>
+        <div class="table-layout">
+            <div class="filter-bar">
+                <paginated-search id="testsearch" table="#testtable">
+                    <style></style>
+                </paginated-search>
+            </div>
+            <paginated-table id="testtable" page-size="3">
+                <columns>
+                    <column>Name</column>
+                    <column>Categories</column>
+                    <column>Products</column>
+                </columns>
+                <link href="../../main/resources/themes/base/paginated/table.css" rel="stylesheet" type="text/css">
+            </paginated-table>
+            <div style="display: flex; align-items: center;">
+                <paginated-display table="#testtable" style="flex-grow: 1;">
+                    <link href="../../main/resources/themes/base/paginated/display.css" rel="stylesheet" type="text/css">
+                </paginated-display>
+                <paginated-pager table="#testtable">
+                    <link href="../../main/resources/themes/base/paginated/pager.css" rel="stylesheet" type="text/css">
+                </paginated-pager>
+            </div>
+        </div>
+    </body>
+</html>

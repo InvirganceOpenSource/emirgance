@@ -45,6 +45,6 @@ div.number {
     cursor: pointer;
 }
 
-div.number.selected {
+div.number[aria-current] {
     font-weight: bold;
 }
