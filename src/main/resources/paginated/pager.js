@@ -109,7 +109,7 @@ class PaginatedTablePager extends EmirganceBaseElement
         {
             number = document.createElement("div");
             
-            number.setAttribute("tabindex", "0");
+            number.setAttribute("tabindex", (i === this.#focusPage) || (this.#focusPage === null && i === selected) ? "0" : "-1");
             number.setAttribute("aria-label", "Page " + (i+1));
             number.classList.add("number");
             number.innerText = format.format(start+i+1);
