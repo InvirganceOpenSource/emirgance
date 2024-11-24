@@ -72,7 +72,11 @@
                     {Name: "Moe", Categories: 7, Products: 54},
                     {Name: "Curly", Categories: 4, Products: 4},
                     {Name: "Shemp", Categories: 8, Products: 14},
-                    {Name: "Joe", Categories: 6, Products: 21}
+                    {Name: "Joe", Categories: 6, Products: 21},
+                    {Name: "Clark", Categories: 2, Products: 13},
+                    {Name: "Bull", Categories: 5, Products: 49},
+                    {Name: "Bubba", Categories: 1, Products: 1},
+                    {Name: "Forrest", Categories: 6, Products: 99}
                 ];
                 
                 document.getElementById("testtable").data(data);
@@ -202,7 +206,7 @@
             <tab-content>
                 <div style="height: 60vh; overflow: auto;">
                     
-                    <div>
+                    <div style="text-align: right;">
                         <paginated-search id="testsearch" table="#testtable">
                             <style></style>
                         </paginated-search>

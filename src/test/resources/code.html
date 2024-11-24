@@ -32,11 +32,11 @@ this.shadowRoot.innerHTML = "&lt;style> " +
                 <code-panel type="javascript" start="15">
                     <link href="../../main/resources/themes/base/code/panel.css" rel="stylesheet" type="text/css">
                     <code>        this.childNodes.forEach(function(element) {
-                if(element.nodeName === "STYLE")
-                {
-                    shadow.appendChild(element);
-                }
-            });</code>
+            if(element.nodeName === "STYLE")
+            {
+                shadow.appendChild(element);
+            }
+        });</code>
                 </code-panel>
             </div>
 
