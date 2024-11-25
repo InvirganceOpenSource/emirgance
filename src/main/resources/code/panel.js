@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-class CodePanel extends HTMLElement 
+class CodePanel extends EmirganceBaseElement
 {
     static observedAttributes = ["type", "start"];
     
@@ -40,7 +40,6 @@ class CodePanel extends HTMLElement
     static keywords = ["for", "if", "while", "else", "function", "break", "continue", "return", "var", "let", "const", "this", "get", "set", "class", "extends", "static", "true", "false"];
     static global = ["$", "console", "window"];
 
-    #shadow;
     #code;
     #tokens;
     #type = "text";
@@ -58,10 +57,49 @@ class CodePanel extends HTMLElement
         super();
     }
     
+    get code()
+    {
+        return this.#code;
+    }
+    
+    set code(code)
+    {
+        this.#code = code;
+        this.#renderCode();
+    }
+    
+    get type()
+    {
+        return this.#type;
+    }
+    
+    set type(type)
+    {
+        var current = this.#type;
+        
+        this.#type = type.toLowerCase();
+        
+        if(current !== this.#type) this.#renderCode();
+    }
+    
+    get startLine()
+    {
+        return this.#startLine;
+    }
+    
+    set startLine(start)
+    {
+        var current = this.#startLine;
+        
+        this.#startLine = parseInt(start);
+        
+        if(current !== this.#startLine) this.#renderCode();
+    }
+    
     attributeChangedCallback(name, oldValue, newValue)
     {
-        if(name === "type") this.#type = newValue.toLowerCase();
-        if(name === "start") this.#startLine = parseInt(newValue);
+        if(name === "type") this.type = newValue;
+        if(name === "start") this.startLine = newValue;
     }
     
     #colorizeHTML(tokens)
@@ -613,26 +651,10 @@ class CodePanel extends HTMLElement
     
     #renderCode()
     {
-        var that = this;
         var code = document.createElement("code");
-        var existing = this.#shadow.querySelector("code");
+        var existing = this.shadowRoot.querySelector("code");
         
-        if(!this.childNodes.length) return;
-        if(existing) this.#shadow.removeChild(existing);
-        
-        this.childNodes.forEach(function(element) {
-            if(element.nodeName === "STYLE" || element.nodeName === "LINK")
-            {
-                that.#shadow.appendChild(element);
-            }
-            
-            if(element.nodeName === "CODE")
-            {
-                that.#code = element.textContent;
-                that.removeChild(element);
-            }
-        });
-        
+        if(existing) this.shadowRoot.removeChild(existing);
         if(!this.#code) return;
         
         code.classList.add("codeblock");
@@ -664,21 +686,24 @@ class CodePanel extends HTMLElement
             this.#renderLines(code, this.#tokens, this.#startLine);
         }
         
-        this.#shadow.appendChild(code);
+        this.shadowRoot.appendChild(code);
     }
     
-    connectedCallback()
+    emirganceInit()
     {
         var that = this;
         
-        this.#shadow = this.attachShadow({ mode: "open" });
-
-        var observer = new MutationObserver(function() {
-            that.#renderCode();
-         });
-
-        observer.observe(this, {attributes: false, childList: true, characterData: false, subtree: false});
-
+        if(!this.childNodes.length) return;
+        
+        for(var element of this.childNodes)
+        {
+            if(element.nodeName === "CODE")
+            {
+                that.#code = element.textContent;
+                that.removeChild(element);
+            }
+        }
+        
         this.#renderCode();
     }
 }
