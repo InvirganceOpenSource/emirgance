@@ -14,7 +14,8 @@
             .viewer { 
                 max-width: 55em; 
                 margin: auto; 
-                margin-top: 4em;}
+                margin-top: 4em;
+            }
             
             .viewer code-viewer .panel { 
                 display: flex;
@@ -27,8 +28,8 @@
             
             .viewer code-viewer .left {
                 min-width: 20%; 
-                background-color: 
-                white; padding: 5px; 
+                background-color: white; 
+                padding: 5px; 
                 border-radius: 6px;
             }
             
@@ -36,6 +37,28 @@
                 background-color: white; 
                 border-radius: 6px; 
                 flex-grow: 1;
+                overflow: auto;
+            }
+            
+            code-viewer .default-panel { 
+                display: flex;
+                gap: 8px; 
+                padding: 8px; 
+                height: 24lh;
+                border-radius: 8px; 
+                border: 1px solid rgb(183, 183, 184); 
+            }
+            
+            
+            code-viewer .default-left {
+                padding: 5px; 
+                border-radius: 6px;
+                border: 1px solid rgb(183, 183, 184); 
+            }
+            
+            code-viewer .default-right {
+                border-radius: 6px; 
+                border: 1px solid rgb(183, 183, 184); 
                 overflow: auto;
             }
         </style>
@@ -51,6 +74,25 @@
                 <path fill="#f06529" d="m30,0l34.9,395.79999l156.6,52.20001l157.60001,-52.20001l34.89999,-395.79999l-384,0zm308.20001,127.89999l-183.8,0l4.09999,49.40001l175.60001,0l-13.60001,148.40001l-97.89999,27l0,0.29999l-1.09999,0l-98.7,-27.29999l-6,-75.80002l47.7,0l3.49998,38.10001l53.5,14.5l53.70001,-14.5l6,-62.20001l-166.90001,0l-12.8,-145.59999l241.10001,0l-4.39999,47.7z"/>
             </symbol>
         </svg>
+        
+        <div class="viewer">
+            <code-viewer baseurl="codeviewer/example">
+                    <tree-panel>
+                        <tree-node icon="#icon-html" value="index.html">
+                            <tree-label>index.html</tree-label>
+                        </tree-node>
+                        <tree-node icon="#icon-js" value="mybutton.js">
+                            <tree-label>mybutton.js</tree-label>
+                        </tree-node>
+                    </tree-panel>
+
+                    <code-panel>
+                        <link href="../../main/resources/themes/base/code/panel.css" rel="stylesheet" type="text/css">
+                        <code></code>
+                    </code-panel>
+            </code-viewer>
+        </div>
+        
         <div class="viewer">
             <code-viewer baseurl="codeviewer/example">
                 <div class="panel">

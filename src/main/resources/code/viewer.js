@@ -33,6 +33,57 @@ class CodeViewer extends HTMLElement
         super();
     }
     
+    #findTree()
+    {
+        for(var element of this.children)
+        {
+            if(element instanceof TreePanel) return element;
+        }
+        
+        return null;
+    }
+    
+    #findCode()
+    {
+        for(var element of this.children)
+        {
+            if(element instanceof CodePanel) return element;
+        }
+        
+        return null;
+    }
+    
+    #automanage()
+    {
+        var panel;
+        var left;
+        var right;
+        
+        var tree = this.#findTree();
+        var code = this.#findCode();
+        
+        if(this.children.length !== 2) return;
+        if(!tree || !code) return;
+        
+        panel = document.createElement("div");
+        left = document.createElement("div");
+        right = document.createElement("div");
+        
+        panel.classList.add("default-panel");
+        left.classList.add("default-left");
+        right.classList.add("default-right");
+        
+        (this.children[0] === code ? left : right).style.flexGrow = "1";
+        
+        left.appendChild(this.children[0] === tree ? tree : code);
+        right.appendChild(this.children[0] === tree ? tree : code);
+        
+        panel.appendChild(left);
+        panel.appendChild(right);
+        
+        this.appendChild(panel);
+    }
+    
     #translatePath(path)
     {
         return path.join("/");
@@ -70,6 +121,7 @@ class CodeViewer extends HTMLElement
         var observer = new MutationObserver(function() {
             that.querySelectorAll("tree-panel").forEach(function(element) {
                 that.register(element);
+                that.#automanage();
             });
          });
 
@@ -87,7 +139,6 @@ class CodeViewer extends HTMLElement
             this.#treePanels.push(element);
             
             element.addEventListener("NodeSelected", function(event) {
-                
                 that.load(event.detail.path);
             });
         }
