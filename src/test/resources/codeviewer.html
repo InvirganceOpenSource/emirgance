@@ -50,16 +50,18 @@
             }
             
             
-            code-viewer .default-left {
-                padding: 5px; 
+            code-viewer .default-left, code-viewer .default-right {
                 border-radius: 6px;
                 border: 1px solid rgb(183, 183, 184); 
+                overflow: auto;
             }
             
-            code-viewer .default-right {
-                border-radius: 6px; 
-                border: 1px solid rgb(183, 183, 184); 
-                overflow: auto;
+            code-viewer .default-left:has(tree-panel), code-viewer .default-right:has(tree-panel) {
+                padding: 5px;
+            }
+            
+            code-viewer .default-left:has(code-panel), code-viewer .default-right:has(code-panel) {
+                flex-grow: 1;
             }
         </style>
     </head>
