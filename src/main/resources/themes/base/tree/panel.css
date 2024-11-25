@@ -43,11 +43,16 @@ tree-label:hover, tree-label:focus {
     background-color: rgb(233, 233, 234);
 }
 
-tree-node[role="group"] > span > svg {
+tree-node[role="group"][aria-expanded="false"] > span svg.custom {
+    width: 13px;
+    height: 13px;
+}
+
+tree-node[role="group"] > span > svg.expand {
     transform: translate(0, 0);
 }
 
-tree-node[role="group"][aria-expanded="false"] > span svg {
+tree-node[role="group"][aria-expanded="false"] > span svg.expand {
     transform: rotate(270deg) translate(2px, 2px);
 }
 
