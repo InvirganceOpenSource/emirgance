@@ -488,9 +488,9 @@ class TreeNode extends HTMLElement
         }
     }
     
-    #setExapndIcon()
+    #setExpandIcon()
     {
-        this.#icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="10" viewBox="0 0 13 10">' +
+        this.#icon.innerHTML = '<svg class="expand" xmlns="http://www.w3.org/2000/svg" width="13" height="10" viewBox="0 0 13 10">' +
                                '  <polygon points="2 1, 12 1, 7 9"></polygon>' +
                                '</svg>';
                        
@@ -560,7 +560,7 @@ class TreeNode extends HTMLElement
         else if(element instanceof TreeNode)
         {
             if(!this.#children.includes(element)) this.#children.push(element);
-            if(this.#children.length) this.#setExapndIcon();
+            if(this.#children.length) this.#setExpandIcon();
         }
         else
         {
