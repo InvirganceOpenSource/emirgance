@@ -27,6 +27,7 @@ class CodeViewer extends HTMLElement
     static observedAttributes = ["baseurl"];
     
     #treePanels = [];
+    #preloaded = false;
     
     constructor()
     {
@@ -98,9 +99,6 @@ class CodeViewer extends HTMLElement
         
         type = path.lastIndexOf(".") < 0 ? "text" : path.substring(path.lastIndexOf(".")+1);
         
-        console.log("Loading ", path);
-        console.log("Type ", type);
-
         response = await fetch(path);
         data = await response.text();
         
@@ -115,12 +113,20 @@ class CodeViewer extends HTMLElement
     connectedCallback()
     {
         var that = this;
+        var preload = this.getAttribute("preload");
         
         var observer = new MutationObserver(function() {
             that.querySelectorAll("tree-panel").forEach(function(element) {
                 that.register(element);
                 that.#automanage();
             });
+            
+            if(preload && !that.#preloaded && that.querySelectorAll("code-panel").length)
+            {
+                that.load(preload);
+                
+                that.#preloaded = true;
+            }
          });
 
         observer.observe(this, {childList: true, subtree: false});

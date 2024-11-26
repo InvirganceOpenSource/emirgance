@@ -8,7 +8,10 @@
         <script src="../../main/resources/base/base.js"></script>
         <script src="../../main/resources/code/panel.js"></script>
         <script src="../../main/resources/code/viewer.js"></script>
+        <script src="../../main/resources/tab/panel.js"></script>
         <script src="../../main/resources/tree/panel.js"></script>
+        <link href="../../main/resources/themes/base/code/viewer.css" rel="stylesheet" type="text/css">
+        <link href="../../main/resources/themes/base/tab/panel.css" rel="stylesheet" type="text/css">
         <link href="../../main/resources/themes/base/tree/panel.css" rel="stylesheet" type="text/css">
         <style>
             .viewer { 
@@ -39,30 +42,6 @@
                 flex-grow: 1;
                 overflow: auto;
             }
-            
-            code-viewer .default-panel { 
-                display: flex;
-                gap: 8px; 
-                padding: 8px; 
-                height: 24lh;
-                border-radius: 8px; 
-                border: 1px solid rgb(183, 183, 184); 
-            }
-            
-            
-            code-viewer .default-left, code-viewer .default-right {
-                border-radius: 6px;
-                border: 1px solid rgb(183, 183, 184); 
-                overflow: auto;
-            }
-            
-            code-viewer .default-left:has(tree-panel), code-viewer .default-right:has(tree-panel) {
-                padding: 5px;
-            }
-            
-            code-viewer .default-left:has(code-panel), code-viewer .default-right:has(code-panel) {
-                flex-grow: 1;
-            }
         </style>
     </head>
     <body>
@@ -78,7 +57,7 @@
         </svg>
         
         <div class="viewer">
-            <code-viewer baseurl="codeviewer/example">
+            <code-viewer baseurl="codeviewer/example" preload="index.html">
                     <tree-panel>
                         <tree-node icon="#icon-html" value="index.html">
                             <tree-label>index.html</tree-label>
@@ -96,7 +75,7 @@
         </div>
         
         <div class="viewer">
-            <code-viewer baseurl="codeviewer/example">
+            <code-viewer baseurl="codeviewer/example" preload="index.html">
                 <div class="panel">
                     <div class="left">
                         <tree-panel>
@@ -118,6 +97,99 @@
                     
                 </div>
             </code-viewer>
+        </div>
+        
+        <div class="tabbed-viewer">
+            <style>
+                
+            .tabbed-viewer { 
+                max-width: 55em; 
+                margin: auto; 
+                margin-top: 4em;
+                margin-bottom: 4em;
+            }
+            
+            .tabbed-viewer tab-content {
+                min-height: calc(24lh + 10px + 6px);
+            }
+            
+            .tabbed-viewer code-viewer .panel { 
+                display: flex;
+                gap: 8px; 
+                padding: 8px; 
+                height: 24lh;
+                border-radius: 8px; 
+            }
+            
+            .tabbed-viewer code-viewer .left {
+                min-width: 20%; 
+                padding: 5px; 
+                border-radius: 6px;
+                border: 1px solid rgb(183, 183, 184); 
+            }
+            
+            .tabbed-viewer code-viewer .right {
+                border-radius: 6px; 
+                border: 1px solid rgb(183, 183, 184); 
+                flex-grow: 1;
+                overflow: auto;
+            }
+            
+            .tabbed-viewer tab-content .frame {
+                display: flex;
+                border-radius: 6px;
+                border: 1px solid rgb(183, 183, 184); 
+                height: 24lh;
+                margin: 0.5em;
+                overflow: hidden;
+            }
+            
+            .tabbed-viewer tab-content iframe {
+                width: 100%;
+                height: 100%;
+                border: 0;
+            }
+            </style>
+        
+            <tab-panel>
+                <tab-buttons>
+                    <tab-button>Code</tab-button>
+                    <tab-button>View</tab-button>
+                </tab-buttons>
+                <tab-content>
+                    
+                    <code-viewer baseurl="codeviewer/example" preload="index.html">
+                        <div class="panel">
+                            <div class="left">
+                                <tree-panel>
+                                    <tree-node icon="#icon-html" value="index.html">
+                                        <tree-label>index.html</tree-label>
+                                    </tree-node>
+                                    <tree-node icon="#icon-js" value="mybutton.js">
+                                        <tree-label>mybutton.js</tree-label>
+                                    </tree-node>
+                                </tree-panel>
+                            </div>
+
+                            <div class="right" tabindex="0">
+                                <code-panel>
+                                    <link href="../../main/resources/themes/base/code/panel.css" rel="stylesheet" type="text/css">
+                                    <code></code>
+                                </code-panel>
+                            </div>
+
+                        </div>
+                    </code-viewer>
+                    
+                </tab-content>
+                <tab-content>
+                    
+                    <div class="frame">
+                        <iframe src="codeviewer/example/index.html"></iframe>
+                    </div>
+                    
+                </tab-content>
+            </tab-panel>
         </div>
         
     </body>
