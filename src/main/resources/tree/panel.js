@@ -96,6 +96,16 @@ class TreePanel extends HTMLElement
         }
     }
     
+    findChild(name)
+    {
+        for(var child of this.#children)
+        {
+            if(child.value === name) return child;
+        }
+        
+        return null;
+    }
+    
     childIndex(element)
     {
         return this.#children.indexOf(element);
@@ -162,6 +172,20 @@ class TreePanel extends HTMLElement
         {
             this.#children[this.focusedIndex+1].focused = true;
         }
+    }
+    
+    selectPath(path)
+    {
+        var node = this;
+        
+        for(var i=0; i<path.length; i++)
+        {
+            node = node.findChild(path[i]);
+
+            if(!node) throw new Error("Path not found", node);
+        }
+        
+        node.selected = true;
     }
     
     connectedCallback()
@@ -365,6 +389,16 @@ class TreeNode extends HTMLElement
         }
         
         return 0;
+    }
+    
+    findChild(name)
+    {
+        for(var child of this.#children)
+        {
+            if(child.value === name) return child;
+        }
+        
+        return null;
     }
     
     childIndex(element)

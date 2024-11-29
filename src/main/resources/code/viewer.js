@@ -83,6 +83,15 @@ class CodeViewer extends HTMLElement
         this.appendChild(panel);
     }
     
+    #parsePath(path)
+    {
+        while(path.startsWith("/")) path = path.substring(1);
+        while(path.endsWith("/")) path = path.substring(0, path.length-1);
+        while(path.indexOf("//") > 0) path = path.replace("//", "/");
+        
+        return path.split("/");
+    }
+    
     #translatePath(path)
     {
         return path.join("/");
@@ -121,11 +130,13 @@ class CodeViewer extends HTMLElement
                 that.#automanage();
             });
             
-            if(preload && !that.#preloaded && that.querySelectorAll("code-panel").length)
+            if(preload && !that.#preloaded && that.querySelectorAll("code-panel").length && that.querySelectorAll("tree-panel").length)
             {
-                that.load(preload);
-                
-                that.#preloaded = true;
+                  that.querySelectorAll("tree-panel").forEach(function(element) {
+                      var path = that.#parsePath(preload);
+
+                      element.selectPath(path);
+                  });
             }
          });
 
