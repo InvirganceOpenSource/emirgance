@@ -653,7 +653,7 @@ class CodePanel extends EmirganceBaseElement
     {
         var code = document.createElement("code");
         var existing = this.shadowRoot.querySelector("code");
-        
+
         if(existing) this.shadowRoot.removeChild(existing);
         if(!this.#code) return;
         
@@ -694,6 +694,7 @@ class CodePanel extends EmirganceBaseElement
         var that = this;
         
         if(!this.childNodes.length) return;
+        if(this.#code) return; // We've already initialized
         
         for(var element of this.childNodes)
         {

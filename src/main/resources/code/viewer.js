@@ -83,6 +83,19 @@ class CodeViewer extends HTMLElement
         this.appendChild(panel);
     }
     
+    #cache(path, value)
+    {
+        var key = "codeviewer_cache_" + path;
+        var cache = sessionStorage.getItem(key);
+        
+        if(value) 
+        {
+            sessionStorage.setItem(key, value);
+        }
+        
+        return (value ? value : cache);
+    }
+    
     #parsePath(path)
     {
         while(path.startsWith("/")) path = path.substring(1);
@@ -106,10 +119,16 @@ class CodeViewer extends HTMLElement
         if(Array.isArray(path)) path = this.#translatePath(path);
         if(this.getAttribute("baseurl")) path = this.getAttribute("baseurl") + "/" + path;
         
+        data = this.#cache(path);
         type = path.lastIndexOf(".") < 0 ? "text" : path.substring(path.lastIndexOf(".")+1);
         
-        response = await fetch(path);
-        data = await response.text();
+        if(!data)
+        {
+            response = await fetch(path);
+            data = await response.text();
+            
+            this.#cache(path, data);
+        }
         
         for(var panel of this.querySelectorAll("code-panel"))
         {
