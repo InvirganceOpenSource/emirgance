@@ -140,28 +140,36 @@ class CodeViewer extends HTMLElement
         }
     }
     
-    connectedCallback()
+    #processDOM()
     {
         var that = this;
         var preload = this.getAttribute("preload");
         
-        var observer = new MutationObserver(function() {
+        that.querySelectorAll("tree-panel").forEach(function(element) {
+            that.register(element);
+            that.#automanage();
+        });
+        
+        if(preload && !that.#preloaded && that.querySelectorAll("code-panel").length && that.querySelectorAll("tree-panel").length)
+        {
             that.querySelectorAll("tree-panel").forEach(function(element) {
-                that.register(element);
-                that.#automanage();
-            });
-            
-            if(preload && !that.#preloaded && that.querySelectorAll("code-panel").length && that.querySelectorAll("tree-panel").length)
-            {
-                  that.querySelectorAll("tree-panel").forEach(function(element) {
-                      var path = that.#parsePath(preload);
+                var path = that.#parsePath(preload);
 
-                      element.selectPath(path);
-                  });
-            }
+                element.selectPath(path);
+            });
+        }
+    }
+    
+    connectedCallback()
+    {
+        var that = this;
+        var observer = new MutationObserver(function() {
+            that.#processDOM();
          });
 
         observer.observe(this, {childList: true, subtree: false});
+        
+        this.#processDOM();
     }
     
     register(element)
