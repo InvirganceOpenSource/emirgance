@@ -74,6 +74,8 @@ class CodeViewer extends HTMLElement
         left.classList.add("default-left");
         right.classList.add("default-right");
         
+        (this.children[0] === code ? left : right).setAttribute("tabindex", "0");
+        
         left.appendChild(this.children[0] === tree ? tree : code);
         right.appendChild(this.children[0] === tree ? tree : code);
         

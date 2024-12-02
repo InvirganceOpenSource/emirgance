@@ -22,7 +22,8 @@
         <meta name="twitter:image" content="https://opengraph.b-cdn.net/production/images/2aa45214-d0de-4125-ac9e-9a07eefd5124.png?token=iAtDrD_86bI5-LkuLEMATWvTzcR2X1o3azDGEIuqCYs&height=580&width=1200&expires=33268395726">
 
         <script src="../../main/resources/base/base.js"></script>
-        <script src="../../main/resources/code/panel.js" defer></script>
+        <script src="../../main/resources/code/panel.js"></script>
+        <script src="../../main/resources/code/viewer.js"></script>
         <script src="../../main/resources/tab/panel.js"></script>
         <script src="../../main/resources/tree/panel.js"></script>
         <script src="../../main/resources/paginated/table.js"></script>
@@ -31,6 +32,7 @@
         <script src="../../main/resources/paginated/search.js" defer></script>
         <link rel="stylesheet" href="../../main/resources/themes/base/tab/panel.css">
         <link rel="stylesheet" href="../../main/resources/themes/base/tree/panel.css">
+        <link rel="stylesheet" href="../../main/resources/themes/base/code/viewer.css">
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 var tree = document.getElementById("base-test");
@@ -96,11 +98,14 @@
                 <tab-button>
                     Code
                 </tab-button>
+                <tab-button>
+                    Code Viewer
+                </tab-button>
             </tab-buttons>
             <tab-content>
                 
                 <div style="display: flex; gap: 3em;">
-                    <div style="height: 60vh; overflow: auto; min-width: 220px;">
+                    <div style="height: calc(60vh - 16px); overflow: auto; min-width: 220px;">
 
                         <tree-panel id="base-test">
                             <tree-node>
@@ -203,7 +208,7 @@
                 </div>
 
             </tab-content>
-            <tab-content>
+            <tab-content style="padding: 0px;">
                 <div style="height: 60vh; overflow: auto;">
                     
                     <div style="text-align: right;">
@@ -278,6 +283,45 @@
 
 customElements.define("YOUR-TAG-NAME", WebComponentTemplate);</code>
                 </div>
+            </tab-content>
+            
+            <tab-content style="padding: 0px;">
+                
+                <div style="height: 60vh;">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
+                        <!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                        <symbol id="icon-js" viewBox="0 0 448 448">
+                            <rect fill="black" height="246" width="313" y="168" x="107"/>
+                            <path fill="#f7df1e" d="m0,0l0,448l448,0l0,-448l-448,0zm243.8,349.39999c0,43.60001 -25.60001,63.5 -62.90001,63.5c-33.7,0 -53.2,-17.39999 -63.2,-38.5l34.3,-20.70001c6.60001,11.70001 12.60001,21.60001 27.10001,21.60001c13.79999,0 22.59999,-5.39999 22.59999,-26.5l0,-143.09999l42.10001,0l0,143.7zm99.59999,63.5c-39.10001,0 -64.39999,-18.60001 -76.69998,-43l34.29999,-19.80002c9,14.70001 20.79999,25.60004 41.5,25.60004c17.39999,0 28.60001,-8.70001 28.60001,-20.80002c0,-14.39999 -11.39999,-19.5 -30.70001,-28l-10.5,-4.5c-30.39999,-12.89999 -50.5,-29.19998 -50.5,-63.5c0,-31.60001 24.10001,-55.59999 61.60001,-55.59999c26.79999,0 46,9.3 59.79999,33.7l-32.79999,21c-7.20001,-12.89999 -15,-18 -27.10001,-18c-12.29999,0 -20.10001,7.79999 -20.10001,18c0,12.60001 7.80002,17.70001 25.90002,25.60001l10.5,4.5c35.79999,15.29999 55.89999,31 55.89999,66.19998c0,37.80002 -29.80002,58.60001 -69.70001,58.60001z"/>
+                        </symbol>
+                        <symbol id="icon-html" viewBox="0 0 448 448">
+                            <path fill="#f06529" d="m30,0l34.9,395.79999l156.6,52.20001l157.60001,-52.20001l34.89999,-395.79999l-384,0zm308.20001,127.89999l-183.8,0l4.09999,49.40001l175.60001,0l-13.60001,148.40001l-97.89999,27l0,0.29999l-1.09999,0l-98.7,-27.29999l-6,-75.80002l47.7,0l3.49998,38.10001l53.5,14.5l53.70001,-14.5l6,-62.20001l-166.90001,0l-12.8,-145.59999l241.10001,0l-4.39999,47.7z"/>
+                        </symbol>
+                    </svg>
+                    
+                    <style>
+                        code-viewer .default-panel {
+                            display: flex;
+                            height: calc(60vh - 16px);
+                        }
+                    </style>
+
+                    <code-viewer baseurl="codeviewer/example" preload="index.html">
+                        <tree-panel style="min-width: 150px;">
+                            <tree-node icon="#icon-html" value="index.html">
+                                <tree-label>index.html</tree-label>
+                            </tree-node>
+                            <tree-node icon="#icon-js" value="mybutton.js">
+                                <tree-label>mybutton.js</tree-label>
+                            </tree-node>
+                        </tree-panel>
+
+                        <code-panel>
+                            <link href="../../main/resources/themes/base/code/panel.css" rel="stylesheet" type="text/css">
+                        </code-panel>
+                    </code-viewer>
+                </div>
+                
             </tab-content>
         </tab-panel>
         </div>

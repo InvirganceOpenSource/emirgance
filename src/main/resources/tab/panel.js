@@ -382,8 +382,8 @@ class TabContent extends HTMLElement
     
     select(select)
     {
-        if(!select) this.style.display = "none";
-        else delete this.style.removeProperty("display");
+        if(!select) this.style.setProperty("display", "none");
+        else this.style.removeProperty("display");
     }
 }
 

@@ -22,18 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-code-viewer .default-panel { 
+code-viewer .default-panel {
     display: flex;
     gap: 8px; 
     padding: 8px;
-    height: 24lh;
-    border-radius: 8px; 
-    border: 1px solid rgb(183, 183, 184); 
+/*    height: 24lh;*/ /* Implement a height in your own usage to control the scrollable area */
 }
 
 code-viewer .default-left, code-viewer .default-right {
     border-radius: 6px;
-    border: 1px solid rgb(183, 183, 184); 
+    border: 1px solid rgb(183, 183, 184);
     overflow: auto;
 }
 
