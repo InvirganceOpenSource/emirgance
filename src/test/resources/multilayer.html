@@ -11,7 +11,7 @@
         <meta property="og:type" content="website">
         <meta property="og:title" content="Multicomponent Test">
         <meta property="og:description" content="Tabbed interface containing a Tree and a Table">
-        <meta property="og:image" content="https://opengraph.b-cdn.net/production/images/2aa45214-d0de-4125-ac9e-9a07eefd5124.png?token=iAtDrD_86bI5-LkuLEMATWvTzcR2X1o3azDGEIuqCYs&height=580&width=1200&expires=33268395726">
+        <meta property="og:image" content="https://opengraph.b-cdn.net/production/images/bc69d134-4cdb-49f3-ad44-b9205091cb29.png?token=7XaQnNUQpxa5hAf5HPY3napo7V6bwGpP9lhQyFmBpdM&height=637&width=1200&expires=33269509422">
 
         <!-- Twitter Meta Tags -->
         <meta name="twitter:card" content="summary_large_image">
@@ -19,7 +19,7 @@
         <meta property="twitter:url" content="https://invirganceopensource.github.io/emirgance/src/test/resources/multilayer.html">
         <meta name="twitter:title" content="Multicomponent Test">
         <meta name="twitter:description" content="Tabbed interface containing a Tree and a Table">
-        <meta name="twitter:image" content="https://opengraph.b-cdn.net/production/images/2aa45214-d0de-4125-ac9e-9a07eefd5124.png?token=iAtDrD_86bI5-LkuLEMATWvTzcR2X1o3azDGEIuqCYs&height=580&width=1200&expires=33268395726">
+        <meta name="twitter:image" content="https://opengraph.b-cdn.net/production/images/bc69d134-4cdb-49f3-ad44-b9205091cb29.png?token=7XaQnNUQpxa5hAf5HPY3napo7V6bwGpP9lhQyFmBpdM&height=637&width=1200&expires=33269509422">
 
         <script src="../../main/resources/base/base.js"></script>
         <script src="../../main/resources/code/panel.js" defer></script>
@@ -304,10 +304,14 @@ customElements.define("YOUR-TAG-NAME", WebComponentTemplate);</code>
                             display: flex;
                             height: calc(60vh - 16px);
                         }
+                        
+                        code-viewer .default-panel .default-left {
+                            min-width: 160px;
+                        }
                     </style>
 
                     <code-viewer baseurl="codeviewer/example" preload="index.html">
-                        <tree-panel style="min-width: 150px;">
+                        <tree-panel>
                             <tree-node icon="#icon-html" value="index.html">
                                 <tree-label>index.html</tree-label>
                             </tree-node>
