@@ -82,4 +82,21 @@ class EmirganceBaseElement extends HTMLElement
     emirganceInit()
     {
     }
+    
+    static autoProperty(name)
+    {
+        var field = "#" + name;
+        
+        Object.defineProperty(this.prototype, name, {
+            get: function() {
+                return this[field];
+            },
+            set: function(value) {
+                this[field] = value;
+
+                if(this.hasAttribute(name)) this.setAttribute(name, value);
+                if(this.render) this.render();
+            }
+        });
+    }
 }
