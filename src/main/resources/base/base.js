@@ -33,17 +33,36 @@ class EmirganceBaseElement extends HTMLElement
         this.attachShadow({ mode: "open" });
         
         var that = this;
+        var prototype = Object.getPrototypeOf(this);
         
         this.#observer = new MutationObserver(function(mutations) {
+            
+            var nodeChanges = mutations.filter(value => value.type === "childList");
+            var attributeChanges = mutations.filter(value => value.type === "attributes");
+            
+            if(that.#initialized)
+            {
+                attributeChanges.forEach(function(change) {
+                    var value = change.target.getAttribute(change.attributeName);
+                    
+                    if(prototype.hasOwnProperty(change.attributeName) && value !== change.target[change.attributeName])
+                    {
+                        change.target[change.attributeName] = value;
+                    }
+                });
+            }
+            
+            if(!nodeChanges.length) return; // Just dealing with attributes
+            
             that.#attachElements();
             
             if(!that.#initialized) that.emirganceInit();
-            else that.emirganceUpdated(mutations);
+            else that.emirganceUpdated(nodeChanges);
             
             that.#initialized = true;
          });
 
-        this.#observer.observe(this, {attributes: false, childList: true});
+        this.#observer.observe(this, {attributes: true, childList: true});
     }
 
     #attachElements()
@@ -107,7 +126,7 @@ class EmirganceBaseElement extends HTMLElement
             set: function(value) {
                 this[field] = value;
 
-                if(this.hasAttribute(name)) this.setAttribute(name, value);
+                if(this.hasAttribute(name) && this.getAttribute(name) !== value) this.setAttribute(name, value);
                 if(this.render) this.render();
             }
         });
