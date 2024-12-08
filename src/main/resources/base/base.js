@@ -51,6 +51,16 @@ class EmirganceBaseElement extends HTMLElement
                     }
                 });
             }
+            else if(that.hasAttributes())
+            {
+                for(var attribute of that.attributes) 
+                {
+                    if(prototype.hasOwnProperty(attribute.name) && attribute.value !== this[attribute.name])
+                    {
+                        that[attribute.name] = attribute.value;
+                    }
+                }
+            }
             
             if(!nodeChanges.length) return; // Just dealing with attributes
             
@@ -118,6 +128,8 @@ class EmirganceBaseElement extends HTMLElement
             
             return;
         }
+        
+        if(this.prototype.hasOwnProperty(name)) return; // Already defined
         
         Object.defineProperty(this.prototype, name, {
             get: function() {
