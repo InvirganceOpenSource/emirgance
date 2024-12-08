@@ -23,6 +23,7 @@
  */
 class EmirganceBaseElement extends HTMLElement 
 {
+    #initialized = false;
     #observer;
     
     constructor() 
@@ -34,11 +35,15 @@ class EmirganceBaseElement extends HTMLElement
         var that = this;
         
         this.#observer = new MutationObserver(function(mutations) {
-            that.#observer.disconnect();
             that.#attachElements();
+            
+            if(!that.#initialized) that.emirganceInit();
+            else that.emirganceUpdated(mutations);
+            
+            that.#initialized = true;
          });
 
-        this.#observer.observe(this, {attributes: false, childList: true, characterData: false, subtree: false});
+        this.#observer.observe(this, {attributes: false, childList: true});
     }
 
     #attachElements()
@@ -65,16 +70,13 @@ class EmirganceBaseElement extends HTMLElement
                 symbols.setAttribute("ref", element.getAttribute("ref"));
             }
         });
-        
-        this.emirganceInit();
     }
     
     connectedCallback()
     {
         // Load was deferred
-        if(this.childNodes.length)
+        if(!this.#initialized)
         {
-            this.#observer.disconnect();
             this.#attachElements();
         }
     }
@@ -83,9 +85,20 @@ class EmirganceBaseElement extends HTMLElement
     {
     }
     
+    emirganceUpdated(changes)
+    {
+    }
+    
     static autoProperty(name)
     {
         var field = "#" + name;
+        
+        if(Array.isArray(name))
+        {
+            for(var item of name) this.autoProperty(item);
+            
+            return;
+        }
         
         Object.defineProperty(this.prototype, name, {
             get: function() {
