@@ -39,8 +39,8 @@ class EmirganceBaseElement extends HTMLElement
             
             var nodeChanges = mutations.filter(value => value.type === "childList");
             var attributeChanges = mutations.filter(value => value.type === "attributes");
-            
-            if(that.#initialized)
+
+            if(that.initialized)
             {
                 attributeChanges.forEach(function(change) {
                     var value = change.target.getAttribute(change.attributeName);
@@ -66,10 +66,15 @@ class EmirganceBaseElement extends HTMLElement
             
             that.#attachElements();
             
-            if(!that.#initialized) that.emirganceInit();
-            else that.emirganceUpdated(nodeChanges);
-            
-            that.#initialized = true;
+            if(!that.initialized) 
+            {
+                that.initialized = true;
+                that.emirganceInit();
+            }
+            else 
+            {
+                that.emirganceUpdated(nodeChanges);
+            }
          });
 
         this.#observer.observe(this, {attributes: true, childList: true});
@@ -104,11 +109,21 @@ class EmirganceBaseElement extends HTMLElement
     connectedCallback()
     {
         // Load was deferred
-        if(!this.#initialized)
+        if(!this.initialized)
         {
             this.#attachElements();
         }
+        
+        if(!this.initialized)
+        {
+            this.initialized = true;
+            
+            this.emirganceInit();
+        }
     }
+    
+    get initialized() { return this.#initialized; };
+    set initialized(initialized) { this.#initialized = initialized; };
     
     emirganceInit()
     {
