@@ -21,9 +21,55 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-class EmirganceBaseElement extends HTMLElement 
+class EmirganceElement extends HTMLElement
 {
     #initialized = false;
+    
+    constructor() 
+    {
+        super();
+    }
+    
+    get initialized() { return this.#initialized; };
+    set initialized(initialized) { this.#initialized = initialized; };
+    
+    emirganceInit()
+    {
+    }
+    
+    emirganceUpdated(changes)
+    {
+    }
+    
+    static autoProperty(name)
+    {
+        var field = "#" + name;
+        
+        if(Array.isArray(name))
+        {
+            for(var item of name) this.autoProperty(item);
+            
+            return;
+        }
+        
+        if(this.prototype.hasOwnProperty(name)) return; // Already defined
+        
+        Object.defineProperty(this.prototype, name, {
+            get: function() {
+                return this[field];
+            },
+            set: function(value) {
+                this[field] = value;
+
+                if(this.hasAttribute(name) && this.getAttribute(name) !== value) this.setAttribute(name, value);
+                if(this.render) this.render();
+            }
+        });
+    }
+}
+
+class EmirganceBaseElement extends EmirganceElement 
+{
     #observer;
     
     constructor() 
@@ -122,40 +168,73 @@ class EmirganceBaseElement extends HTMLElement
         }
     }
     
-    get initialized() { return this.#initialized; };
-    set initialized(initialized) { this.#initialized = initialized; };
-    
-    emirganceInit()
+    disconnectedCallback()
     {
     }
-    
-    emirganceUpdated(changes)
-    {
-    }
-    
-    static autoProperty(name)
-    {
-        var field = "#" + name;
-        
-        if(Array.isArray(name))
-        {
-            for(var item of name) this.autoProperty(item);
-            
-            return;
-        }
-        
-        if(this.prototype.hasOwnProperty(name)) return; // Already defined
-        
-        Object.defineProperty(this.prototype, name, {
-            get: function() {
-                return this[field];
-            },
-            set: function(value) {
-                this[field] = value;
+}
 
-                if(this.hasAttribute(name) && this.getAttribute(name) !== value) this.setAttribute(name, value);
-                if(this.render) this.render();
+class EmirganceStructuralElement extends EmirganceElement 
+{
+    #observer;
+    
+    constructor() 
+    {
+        super();
+        
+        var that = this;
+        var prototype = Object.getPrototypeOf(this);
+        
+        this.#observer = new MutationObserver(function(mutations) {
+            
+            var nodeChanges = mutations.filter(value => value.type === "childList");
+            var attributeChanges = mutations.filter(value => value.type === "attributes");
+
+            if(that.initialized)
+            {
+                attributeChanges.forEach(function(change) {
+                    var value = change.target.getAttribute(change.attributeName);
+                    
+                    if(prototype.hasOwnProperty(change.attributeName) && value !== change.target[change.attributeName])
+                    {
+                        change.target[change.attributeName] = value;
+                    }
+                });
             }
-        });
+            else if(that.hasAttributes())
+            {
+                for(var attribute of that.attributes) 
+                {
+                    if(prototype.hasOwnProperty(attribute.name) && attribute.value !== this[attribute.name])
+                    {
+                        that[attribute.name] = attribute.value;
+                    }
+                }
+            }
+            
+            if(!nodeChanges.length) return; // Just dealing with attributes
+            
+            if(!that.initialized) 
+            {
+                that.initialized = true;
+                that.emirganceInit();
+            }
+            else 
+            {
+                that.emirganceUpdated(nodeChanges);
+            }
+         });
+
+        this.#observer.observe(this, {attributes: true, childList: true});
+    }
+    
+    connectedCallback()
+    {
+        // Load was deferred
+        if(!this.initialized)
+        {
+            this.initialized = true;
+            
+            this.emirganceInit();
+        }
     }
 }
