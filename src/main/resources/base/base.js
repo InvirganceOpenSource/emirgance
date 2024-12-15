@@ -51,7 +51,7 @@ class EmirganceElement extends HTMLElement
             
             return;
         }
-        
+
         if(this.prototype.hasOwnProperty(name)) return; // Already defined
         
         Object.defineProperty(this.prototype, name, {
@@ -59,8 +59,10 @@ class EmirganceElement extends HTMLElement
                 return this[field];
             },
             set: function(value) {
+                if(this[field] === value) return; // No updates
+                
                 this[field] = value;
-
+                
                 if(this.hasAttribute(name) && this.getAttribute(name) !== value) this.setAttribute(name, value);
                 if(this.render) this.render();
             }
@@ -154,6 +156,8 @@ class EmirganceBaseElement extends EmirganceElement
     
     connectedCallback()
     {
+        var prototype = Object.getPrototypeOf(this);
+        
         // Load was deferred
         if(!this.initialized)
         {
@@ -163,6 +167,17 @@ class EmirganceBaseElement extends EmirganceElement
         if(!this.initialized)
         {
             this.initialized = true;
+            
+            if(this.hasAttributes())
+            {
+                for(var attribute of this.attributes)
+                {
+                    if(prototype.hasOwnProperty(attribute.name) && attribute.value !== this[attribute.name])
+                    {
+                        this[attribute.name] = attribute.value;
+                    }
+                }
+            }
             
             this.emirganceInit();
         }
