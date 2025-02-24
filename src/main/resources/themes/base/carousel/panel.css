@@ -1,0 +1,151 @@
+/*
+The MIT License
+
+Copyright 2025 jbanes.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
+carousel-panel {
+    display: block;
+    clip-path: content-box;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+carousel-panel > * {
+    position: absolute;
+    transition-duration: 500ms;
+    transition-property: transform;
+    transform: translateX(100%);
+    width: 100%;
+}
+
+carousel-panel > *:nth-child(4) {
+    transform: translateX(0%);
+}
+
+carousel-panel .navigation {
+    align-content: center;
+    background-color: #888;
+    border-radius: 50%;
+    color: white;
+    cursor: default;
+    font-size: 48px;
+    font-weight: 900;
+    height: 36px;
+    margin: 4px;
+    opacity: 0.5;
+    text-align: center;
+    transition-duration: 250ms;
+    transition-property: opacity;
+    transform: translateX(0%);
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: text-top;
+    width: 36px;
+    z-index: 1001;
+}
+
+carousel-panel .navigation span {
+    position: relative;
+    top: -14px;
+}
+
+carousel-panel .navigation.left {
+    position: absolute;
+    left: 6px;
+    top: calc(50% - 18px);
+}
+
+carousel-panel .navigation.right {
+    position: absolute;
+    right: 6px;
+    top: calc(50% - 18px);
+}
+
+carousel-panel .navigation.left span {
+    left: -2px;
+}
+
+carousel-panel .navigation.right span {
+    left: 2px;
+}
+
+carousel-panel .navigation:hover {
+    opacity: 0.95;
+}
+
+carousel-panel .navigation:active {
+    opacity: 0.6;
+}
+
+carousel-panel .navigation[disabled] {
+    opacity: 0.1 !important;
+}
+
+carousel-panel .bubbles {
+    align-content: top;
+    justify-content: center;
+    display: flex;
+    left: 0;
+    bottom: 4px;
+    height: 24px;
+    transform: translateX(0%);
+    z-index: 1000;
+}
+
+carousel-panel .bubbles div {
+    cursor: default;
+    opacity: 0.5;
+    transition-duration: 500ms;
+    transition-property: opacity;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+carousel-panel .bubbles :not(div[class]), carousel-panel .bubbles div.circle {
+    background-color: #888;
+    border-radius: 50%;
+    margin: 4px;
+    height: 12px;
+    width: 12px;
+}
+
+carousel-panel .bubbles div.dash {
+    border-bottom-color: #888;
+    border-bottom-width: 3px;
+    border-bottom-style: solid;
+    margin: 4px;
+    height: 14px;
+    width: 48px;
+}
+
+carousel-panel .bubbles div:hover {
+    opacity: 0.95;
+}
+
+carousel-panel .bubbles div:active {
+    opacity: 0.7;
+}
+
+carousel-panel .bubbles div[disabled] {
+    opacity: 0.95 !important;
+}

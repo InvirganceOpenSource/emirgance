@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>Code Viewer Test Interface</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="../../main/resources/base/base.js"></script>
+        <script src="../../main/resources/carousel/panel.js"></script>
+        <link href="../../main/resources/themes/base/carousel/panel.css" rel="stylesheet" type="text/css">
+        <style>
+            .carousel-test {
+                margin: auto;
+                margin-bottom: 1rem;
+                margin-top: 1rem;
+                width: 600px;
+            }
+            
+            carousel-panel {
+                border-radius: 12px;
+            }
+            
+            carousel-panel .panel {
+                align-content: center;
+                justify-content: center;
+                text-align: center;
+                font-family: sans-serif;
+                font-size: 150%;
+                font-weight: bold;
+            }
+            
+            .yellow { background: #EFCE36; }
+            .green { background: #8C8; }
+            .orange { background: #E90; color: white; }
+            .magenta { background: #E5A; color: white; }
+            .white { background: #FEFEFE; }
+            .dark { background: #2b3138; color: #FEFEFE; }
+            
+        </style>
+    </head>
+    <body>
+        
+        <!-- Full Panel -->
+        <div class="carousel-test">
+            <carousel-panel style="height: 320px;">
+                <div class="panel yellow">Panel 1</div>
+                <div class="panel green">Panel 2</div>
+                <div class="panel orange">Panel 3</div>
+                <div class="panel magenta">Panel 4</div>
+                <div class="panel white">Panel 5</div>
+                <div class="panel dark">Panel 6</div>
+            </carousel-panel>
+        </div>
+        
+        <!-- Full Panel with Alternate Style -->
+        <div class="carousel-test">
+            <carousel-panel style="/*height: 320px;*/" navigation="dash">
+                <div class="panel yellow">Panel 1</div>
+                <div class="panel green">Panel 2</div>
+                <div class="panel orange">Panel 3</div>
+                <div class="panel magenta">Panel 4</div>
+                <div class="panel white">Panel 5</div>
+                <div class="panel dark">Panel 6</div>
+            </carousel-panel>
+        </div>
+        
+        <!-- One Panel -->
+        <div class="carousel-test">
+            <carousel-panel style="height: 320px;">
+                <div class="panel yellow">Panel 1</div>
+            </carousel-panel>
+        </div>
+        
+        <!-- Two Panels -->
+        <div class="carousel-test">
+            <carousel-panel style="height: 320px;">
+                <div class="panel yellow">Panel 1</div>
+                <div class="panel green">Panel 2</div>
+            </carousel-panel>
+        </div>
+        
+        <!-- Full Panel with Auto Height -->
+        <div class="carousel-test">
+            <carousel-panel>
+                <div class="panel yellow" style="min-height: 120px;">Panel 1</div>
+                <div class="panel green" style="min-height: 120px;">Panel 2</div>
+                <div class="panel orange" style="min-height: 240px;">Panel 3</div>
+                <div class="panel magenta" style="min-height: 160px;">Panel 4</div>
+                <div class="panel white" style="min-height: 120px;">Panel 5</div>
+                <div class="panel dark" style="min-height: 120px;">Panel 6</div>
+            </carousel-panel>
+        </div>
+        
+    </body>
+</html>
