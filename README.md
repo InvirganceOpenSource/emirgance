@@ -1,4 +1,7 @@
 # Emirgance
+
+![Version](https://img.shields.io/badge/Version-pre&dash;release-blue) ![License](https://img.shields.io/badge/License-MIT-green) ![Repository](https://img.shields.io/badge/Platform-Javascript-gold) ![Repository](https://img.shields.io/badge/Repository-n/a-red)
+
 Web Components for rapidly building user interfaces
 
 These components are currently under development. Current release includes:
