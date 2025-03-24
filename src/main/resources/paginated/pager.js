@@ -64,7 +64,7 @@ class PaginatedTablePager extends EmirganceBaseElement
             if(this.#table) this.#table.unregister(this);
             
             this.#table = table;
-            
+
             this.#table.register(this);
             
             return this;
@@ -186,10 +186,10 @@ class PaginatedTablePager extends EmirganceBaseElement
             last.setAttribute("disabled", "true");
         }
         
-        first.onclick = function() { that.table().first(); };
-        previous.onclick = function() { that.table().previous(); };
-        next.onclick = function() { that.table().next(); };
-        last.onclick = function() { that.table().last(); };
+        first.onclick = function() { that.#table.first(); };
+        previous.onclick = function() { that.#table.previous(); };
+        next.onclick = function() { that.#table.next(); };
+        last.onclick = function() { that.#table.last(); };
         
         this.#top.replaceChildren();
         this.#top.appendChild(first);
