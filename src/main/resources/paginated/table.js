@@ -355,6 +355,30 @@ class PaginatedTable extends EmirganceBaseElement
         this.render();
     }
     
+    renderer(key, renderer)
+    {
+        var option;
+        
+        for(var options of this.#columns)
+        {
+            if(options.key === key)
+            {
+                option = options;
+            }
+        }
+        
+        if(!option) return null;
+        
+        if(key)
+        {
+            option.renderer = renderer || PaginatedTable.defaultRenderers[options.type];
+        
+            this.render();
+        }
+        
+        return option.renderer;
+    }
+    
     register(pager)
     {
         if(pager && !this.#pagers.includes(pager)) 
