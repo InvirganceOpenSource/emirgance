@@ -164,23 +164,24 @@ class EmirganceBaseElement extends EmirganceElement
             this.#attachElements();
         }
         
-        if(!this.initialized)
-        {
-            this.initialized = true;
-            
-            if(this.hasAttributes())
-            {
-                for(var attribute of this.attributes)
-                {
-                    if(prototype.hasOwnProperty(attribute.name) && attribute.value !== this[attribute.name])
-                    {
-                        this[attribute.name] = attribute.value;
-                    }
-                }
-            }
-            
-            this.emirganceInit();
-        }
+// FIX ME. Maybe use resize instead?
+//        if(!this.initialized)
+//        {
+//            this.initialized = true;
+//            
+//            if(this.hasAttributes())
+//            {
+//                for(var attribute of this.attributes)
+//                {
+//                    if(prototype.hasOwnProperty(attribute.name) && attribute.value !== this[attribute.name])
+//                    {
+//                        this[attribute.name] = attribute.value;
+//                    }
+//                }
+//            }
+//            
+//            this.emirganceInit();
+//        }
     }
     
     disconnectedCallback()
