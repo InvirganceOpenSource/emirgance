@@ -22,7 +22,7 @@
 
 class PaginatedTable extends EmirganceBaseElement 
 {
-    static observedAttributes = ["page-size", "page"];
+    static observedAttributes = ["page-size", "page", "class"];
     
     static defaultRenderers = {
         "string": function(element, column, value, record) {
@@ -96,6 +96,7 @@ class PaginatedTable extends EmirganceBaseElement
         if(this.#disableCallback) return;
         if(name === "page") this.page(parseInt(newValue)-1);
         if(name === "page-size") this.pageSize(parseInt(newValue));
+        if(name === "class") this.#table.className = newValue;
     }
     
     emirganceInit()
@@ -143,6 +144,8 @@ class PaginatedTable extends EmirganceBaseElement
         });
         
         this.#columns = columns;
+        
+        if(this.getAttribute("class")) this.#table.className = this.getAttribute("class");
         
         this.#table.appendChild(this.#thead);
         this.#table.appendChild(this.#tbody);
