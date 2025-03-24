@@ -96,7 +96,7 @@ class PaginatedTable extends EmirganceBaseElement
         if(this.#disableCallback) return;
         if(name === "page") this.page(parseInt(newValue)-1);
         if(name === "page-size") this.pageSize(parseInt(newValue));
-        if(name === "class") this.#table.className = newValue;
+        if(name === "class" && this.#table) this.#table.className = newValue;
     }
     
     emirganceInit()
