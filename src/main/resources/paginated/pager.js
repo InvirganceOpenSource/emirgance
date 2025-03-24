@@ -118,7 +118,7 @@ class PaginatedTablePager extends EmirganceBaseElement
             if(i === selected) number.setAttribute("aria-current", "true");
             
             number.onclick = function(page) { 
-                return function() { that.table().page(page); };
+                return function() { that.#table.page(page); };
             }(start+i);
             
             number.onkeydown = function(event) {
@@ -126,7 +126,7 @@ class PaginatedTablePager extends EmirganceBaseElement
                 
                 if(event.keyCode === 35)
                 {
-                    that.#focusPage = (that.#focusPage !== null) ? that.table().pages()-1 : null;
+                    that.#focusPage = (that.#focusPage !== null) ? that.#table.pages()-1 : null;
                     that.#focusElement = null;
                     
                     last.click();
@@ -150,7 +150,7 @@ class PaginatedTablePager extends EmirganceBaseElement
                 
                 if(event.keyCode === 39) 
                 {
-                    that.#focusPage = (that.#focusPage !== null) ? Math.min(that.#focusPage+1, that.table().pages()-1) : null;
+                    that.#focusPage = (that.#focusPage !== null) ? Math.min(that.#focusPage+1, that.#table.pages()-1) : null;
                     that.#focusElement = null;
                     
                     next.click();
